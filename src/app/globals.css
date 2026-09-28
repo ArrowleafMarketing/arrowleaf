@@ -1,26 +1,545 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Arrowleaf Marketing + Media — design tokens.
+  Mirrors src/lib/brand.ts; keep the two in sync.
+
+  The brand is light-first: an Extra Light Yellow canvas with near-black text.
+  There is deliberately no prefers-color-scheme inversion — the palette is part
+  of the brand identity, not a user preference.
+*/
+
+@theme {
+  /* --- Primary ------------------------------------------------------- */
+  --color-volt: #d2eb37;
+  --color-lapis: #0700ff;
+  --color-paper: #f4f4f2;
+
+  /* --- Secondary ----------------------------------------------------- */
+  --color-neon-red: #f55d2c;
+  --color-ink: #161c16;
+  --color-white: #ffffff;
+
+  /* --- Accent (special circumstances only; never on Volt) ------------ */
+  --color-cyan: #7df5f0;
+  --color-orange: #ffaa06;
+  --color-magenta: #cb6ce6;
+
+  /* --- Semantic aliases ---------------------------------------------- */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-muted: color-mix(in oklab, var(--color-ink) 62%, transparent);
+  --color-hairline: color-mix(in oklab, var(--color-ink) 14%, transparent);
+
+  /* --- Type ----------------------------------------------------------
+     Poppins carries headings and body; IBM Plex Serif is the italic accent
+     and the uppercase eyebrow. Both are loaded in layout.tsx. */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-plex-serif), ui-serif, Georgia, serif;
+
+  /* Display sizes, paired with tight tracking for Poppins SemiBold.
+     Fluid so the hero reads at reference scale on desktop without
+     overflowing a 320px phone. */
+  --text-display: clamp(2.25rem, 7.5vw, 6rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-hero: clamp(2.25rem, 5vw, 3.75rem);
+  --text-hero--line-height: 1.06;
+  --text-hero--letter-spacing: -0.025em;
+
+  /* --- Motion --------------------------------------------------------- */
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Overshoots its target slightly, then settles — for small playful turns
+     like the CTA arrow swinging up-right. */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Radius ----------------------------------------------------------
+     The brand's rounded-rect language: generous but not pill-shaped,
+     echoing the logo's rounded square. */
+  --radius-brand: 0.75rem;
+  --radius-brand-lg: 1.25rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/*
+  Glow drift — the animated version of the brand mesh gradient.
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  Each blob runs three independent animations on three separate properties:
+  horizontal sway (`transform`), vertical sway (`translate`) and a slow
+  breathe (`scale`). Because the horizontal and vertical periods differ, the
+  combined path is a continuously curving wander that never retraces itself
+  or comes to a full stop. Amplitudes (`--dx`, `--dy`) and periods are set per
+  blob in glow-field.tsx.
+
+  All three are compositor-only properties, so this stays cheap. The global
+  reduced-motion rule below freezes it.
+*/
+@keyframes glow-sway-x {
+  from {
+    transform: translateX(calc(var(--dx) * -1));
+  }
+  to {
+    transform: translateX(var(--dx));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes glow-sway-y {
+  from {
+    translate: 0 calc(var(--dy) * -1);
+  }
+  to {
+    translate: 0 var(--dy);
+  }
+}
+
+/*
+  Reel tile shadow "flow" (showcase-scroll.tsx): a conveyor of brand colors.
+  Each band emerges from behind the tile, travels out at a constant speed to
+  `--flow-reach` (three steps), fading over the last stretch, then starts again
+  from behind the tile. Three bands run a third of a cycle apart, so the
+  colors rotate through every position: the one that leaves the outer edge is
+  the next to come back in at the front.
+
+  z-index steps down as a band travels, so whichever band is innermost is
+  always on top and each one shows as its own stripe. The bands are always in
+  different thirds of the cycle, so they never tie.
+*/
+@keyframes tier-flow {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+    z-index: 3;
+  }
+  33.32% {
+    z-index: 3;
+  }
+  33.33% {
+    z-index: 2;
+  }
+  66.65% {
+    z-index: 2;
+  }
+  66.66% {
+    z-index: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--flow-reach), var(--flow-reach));
+    opacity: 0;
+    z-index: 1;
+  }
+}
+
+@keyframes glow-breathe {
+  from {
+    scale: 0.85;
+  }
+  to {
+    scale: 1.2;
+  }
+}
+
+/*
+  Page gutter — the one side padding every section uses. The site runs edge to
+  edge (no centered max-width column); this is just enough breathing room so
+  text never touches the glass. Fluid: 20px on phones up to 48px on wide
+  screens. Change it here to tighten or loosen the whole site at once.
+*/
+@utility page-gutter {
+  padding-inline: var(--gutter);
+}
+
+:root {
+  /* The gutter as a variable, for anything that must line up with it
+     (e.g. the floating header's width). */
+  --gutter: clamp(1.25rem, 3.5vw, 3rem);
+}
+
+/*
+  `pin:` — when the hero pins for the scroll-to-fullscreen reel: any desktop
+  or laptop window (wide enough for the pillars and reel to share one row) with
+  motion allowed. The hero's vertical spacing scales with screen height under
+  this variant (`pin:…svh` sizes in hero.tsx and showcase-scroll.tsx) so it
+  fits one screen on short laptops too — e.g. a 13" MacBook Pro in Chrome with
+  the Dock and bookmarks bar leaves only ~690px. The 34rem floor only drops
+  out genuinely tiny windows.
+*/
+@custom-variant pin {
+  @media (min-width: 64rem) and (min-height: 34rem) and (prefers-reduced-motion: no-preference) {
+    @slot;
+  }
+}
+
+/*
+  The display size, additionally capped by screen height, so a pinned
+  one-screen hero still fits on short laptop screens (e.g. 1280×720).
+*/
+@utility text-display-fit {
+  font-size: min(var(--text-display), 11svh);
+  line-height: var(--text-display--line-height);
+  letter-spacing: var(--text-display--letter-spacing);
+}
+
+/*
+  Brand gradient recipes. These reproduce the soft mesh look in CSS so a
+  section can carry the texture without shipping an image; the raster meshes in
+  /brand/gradient are still there for large hero areas.
+*/
+@utility bg-mesh-warm {
+  background-image:
+    radial-gradient(
+      60% 80% at 8% 20%,
+      color-mix(in oklab, var(--color-orange) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 70% at 45% 65%,
+      color-mix(in oklab, var(--color-magenta) 45%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 75% at 92% 35%,
+      color-mix(in oklab, var(--color-cyan) 60%, transparent),
+      transparent 70%
+    );
+  background-color: var(--color-paper);
+}
+
+@utility bg-mesh-cool {
+  background-image:
+    radial-gradient(
+      55% 75% at 12% 70%,
+      color-mix(in oklab, var(--color-cyan) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 70% at 55% 20%,
+      color-mix(in oklab, var(--color-magenta) 38%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 70% at 90% 75%,
+      color-mix(in oklab, var(--color-volt) 45%, transparent),
+      transparent 70%
+    );
+  background-color: var(--color-paper);
+}
+
+/* Faint pixel grid — the brand's textural pattern, as a pure-CSS layer. */
+@utility bg-pixel-grid {
+  background-image:
+    linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/*
+  The style guide's highlight treatment: a Volt Green marker behind inline
+  text, as seen in "Crafting custom solutions in [branding]".
+*/
+@utility mark-volt {
+  background-color: var(--color-volt);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 0.3em;
+  padding-block: 0.08em;
+  border-radius: 0.2em;
+}
+
+/*
+  The services "deck": cards that scroll over one another.
+
+  Applied as `sm:stack-card`, so the overlap only kicks in at `sm` and above.
+  Sticky stacking reads correctly only when a card is shorter than the space
+  below the header — otherwise it scrolls past before it can pin and its content
+  gets clipped. Phone viewports can't guarantee that (five offerings plus large
+  dynamic type will exceed a small screen), so on phones the cards fall back to
+  a normal flow list. They still read as a colored sequence; they just don't
+  overlap.
+
+  Each card sets `--stack-top` inline to offset it below the one before it.
+*/
+@utility stack-card {
+  position: sticky;
+  top: var(--stack-top, 6rem);
+}
+
+/*
+  Whatever follows the services stack slides up over the pinned cards like
+  one more card: pulled up over the stack's last screen of room, layered
+  above the cards, with the cards' rounded top and shadow. Only where the
+  cards stack (sm and up).
+*/
+@media (min-width: 40rem) {
+  [data-stack-section] + * {
+    position: relative;
+    z-index: 10;
+    margin-top: -100svh;
+    border-radius: var(--radius-brand-lg) var(--radius-brand-lg) 0 0;
+    box-shadow: 0 -8px 40px -12px color-mix(in oklab, var(--color-ink) 18%, transparent);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Offset shadows and bleeding shapes can reach past the window's edge
+       (the reel's color tiers at full screen); never let them add a sideways
+       scroll. `clip`, not `hidden`, so sticky positioning keeps working. */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    /* Body copy is Poppins ExtraLight per the style guide. */
+    font-weight: 200;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /*
+    The signature Arrowleaf heading move: "Title example" — Poppins SemiBold
+    with one word set in IBM Plex Serif italic. Mark that word with <em>.
+  */
+  h1 em,
+  h2 em,
+  h3 em,
+  h4 em {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Keyboard focus stays visible and on-brand. */
+  :focus-visible {
+    outline: 2px solid var(--color-lapis);
+    outline-offset: 2px;
+  }
+}
+
+/*
+  Page transitions — React <ViewTransition>, see page-transition.tsx.
+
+  The incoming page drops down from the top like a new window sliding over
+  the old one; the old page sinks back and fades beneath it. Motion is in
+  viewport units (100vh), not the page's own height, because pages are taller
+  than the screen: it always travels exactly one screen.
+*/
+:root {
+  --page-drop-duration: 850ms;
+  /* Symmetric ease-in-out ("curtain"): the window builds speed, travels
+     visibly, and lands softly. A fast-start ease-out read as a snap here,
+     because most of the travel happened in the first ~100ms. */
+  --page-drop-ease: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@keyframes page-drop {
+  from {
+    transform: translateY(-100vh);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes page-recede {
+  to {
+    transform: translateY(6vh);
+    opacity: 0.25;
+  }
+}
+
+::view-transition-group(.page-exit) {
+  z-index: 1;
+}
+::view-transition-group(.page-enter) {
+  z-index: 2;
+  /* A soft shadow under the window's leading (bottom) edge. drop-shadow
+     follows the clipped shape below; a box-shadow would be clipped away. */
+  filter: drop-shadow(0 28px 36px rgb(22 28 22 / 0.28));
+}
+::view-transition-old(.page-exit) {
+  animation: page-recede var(--page-drop-duration) var(--page-drop-ease) both;
+}
+::view-transition-new(.page-enter) {
+  /* Only the incoming page's first screen travels, so it drops in as a
+     screen-sized window rather than the whole (much taller) page sliding.
+     The clip moves with the transform. */
+  clip-path: inset(0 0 calc(100% - 100vh) 0);
+  animation: page-drop var(--page-drop-duration) var(--page-drop-ease) both;
+}
+
+/*
+  Keep the page background live instead of cross-fading a frozen snapshot of
+  it; the pages themselves animate in their own groups above.
+*/
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+
+/*
+  The header stays perfectly still above the moving pages. It uses
+  backdrop-filter, so the old snapshot is hidden to avoid a flash.
+*/
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/*
+  Reveals — see docs/MOTION.md and reveal-controller.tsx.
+
+  Mark a content block with `data-reveal` (or `data-reveal="fade"` for
+  opacity only). How it arrives depends on how the reader got to it:
+
+  - "load": on screen when the page loads, or the section a #link lands on,
+    or the page being navigated to. The reader sees the whole view at once,
+    so it gets a short, visible entrance: a rise, a fade and a slight focus,
+    staggered in reading order.
+  - "scroll": comes into view while scrolling. Starts just before it enters
+    and is nearly done by the time it's seen, so nothing ever feels pending.
+  - "instant": already above the fold when the page loaded (a restored
+    scroll position); shown with no animation.
+
+  Blocks are hidden only once the inline script in layout.tsx has marked the
+  document (`html[data-reveals]`), which it never does under reduced motion.
+  The hide is !important so it also beats inline opacity set by JS, and the
+  animations fill backwards only, so each element's own translate, filter
+  and opacity are untouched once it has arrived.
+*/
+:root {
+  --reveal-load-duration: 700ms;
+  --reveal-load-step: 70ms;
+  --reveal-scroll-duration: 420ms;
+  --reveal-scroll-step: 40ms;
+}
+
+@keyframes reveal-load {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+    filter: blur(4px);
+  }
+}
+
+@keyframes reveal-scroll {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-reveals] [data-reveal]:not([data-revealed]) {
+    opacity: 0 !important;
+  }
+  [data-revealed="load"] {
+    animation: reveal-load var(--reveal-load-duration) var(--ease-brand)
+      var(--reveal-delay, 0ms) backwards;
+  }
+  [data-revealed="scroll"] {
+    animation: reveal-scroll var(--reveal-scroll-duration) var(--ease-brand)
+      var(--reveal-delay, 0ms) backwards;
+  }
+  [data-revealed][data-reveal="fade"] {
+    animation-name: reveal-fade;
+  }
+}
+
+/*
+  Drawn lines: an SVG path with `data-draw` (and pathLength="1",
+  stroke-dasharray="1") inside a `data-reveal` block draws itself in when the
+  block arrives, just after it. See docs/MOTION.md.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-reveals] [data-reveal]:not([data-revealed]) [data-draw] {
+    stroke-dashoffset: 1;
+  }
+  [data-draw] {
+    transition:
+      stroke-dashoffset 1s var(--ease-brand) calc(var(--reveal-delay, 0ms) + 250ms),
+      color 500ms var(--ease-brand);
+  }
+}
+
+/* Ticker: two identical copies side by side, moved one copy's width. */
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
+/*
+  The footer lockup rises into place as the footer scrolls into view. Tied to
+  scroll position, never time, so it can't hold anything up; browsers
+  without scroll-driven animations show it in place.
+*/
+@keyframes footer-rise {
+  from {
+    translate: 0 40%;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-rise {
+      animation: footer-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
