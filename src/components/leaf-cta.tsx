@@ -16,6 +16,18 @@ import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
  * small double bounce up-right (the pillar cards' hop, pointed the way it
  * goes). Leaving plays the wipe back and the logo returns.
  *
+ * It also shows itself off as it scrolls into view, so people know it's a
+ * button. When the mark crosses a line a little below the middle of the
+ * screen (IN_VIEW_LINE):
+ *
+ * - With a mouse, it turns into the arrow, bounces, and turns back to the
+ *   logo (a peek); from then on hover brings the arrow back.
+ * - On touch screens, where there's no hover, it turns into the arrow and
+ *   stays one.
+ *
+ * Scrolling back up past the line undoes it (the logo returns), and crossing
+ * again replays it, in either direction.
+ *
  * The host must carry `group/cta` (for the wipe, pure CSS) and
  * `data-cta-host` (for the bounce, found from here, so the host needs no
  * wiring). Decorative: the link around it carries the accessible name.
@@ -28,6 +40,11 @@ const behind = (s: number) =>
   `polygon(${(s - 2) * 100}% -100%, ${(s + 1) * 100}% 200%, -200% 200%, -200% -100%)`;
 
 const WIPE_MS = 420;
+/** Where the mark "arrives": this far down the screen from the top. */
+const IN_VIEW_LINE = 0.6;
+/** Mouse only: how long the peek holds the arrow before turning back. */
+const PEEK_MS = 1150;
+const BOUNCE_MS = 600;
 const BOUNCE: Keyframe[] = [
   { translate: "0 0", easing: "cubic-bezier(0.25, 0, 0.35, 1)" },
   { translate: "2px -2px", offset: 0.28, easing: "cubic-bezier(0.6, 0, 0.8, 1)" },
@@ -37,8 +54,50 @@ const BOUNCE: Keyframe[] = [
 ];
 
 export function LeafCta({ className = "" }: { className?: string }) {
+  const rootRef = useRef<HTMLSpanElement>(null);
   const arrowRef = useRef<SVGSVGElement>(null);
   const reduced = usePrefersReducedMotion();
+
+  // Show off on arrival: a peek with a mouse, the arrow for good on touch.
+  useEffect(() => {
+    const root = rootRef.current;
+    const arrow = arrowRef.current;
+    if (!root || !arrow) return;
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    let peek = 0;
+    let bounce: Animation | undefined;
+    const set = (on: boolean) => {
+      root.dataset.arrow = on ? "true" : "false";
+      if (on && !reduced) {
+        bounce?.cancel();
+        bounce = arrow.animate(BOUNCE, { duration: BOUNCE_MS, delay: WIPE_MS - 40 });
+      }
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        window.clearTimeout(peek);
+        if (!entry.isIntersecting) {
+          set(false);
+          return;
+        }
+        if (!canHover) {
+          set(true);
+          return;
+        }
+        // A mouse user gets a peek; under reduced motion the hover still shows it.
+        if (reduced) return;
+        set(true);
+        peek = window.setTimeout(() => set(false), PEEK_MS);
+      },
+      { rootMargin: `0px 0px -${Math.round((1 - IN_VIEW_LINE) * 100)}% 0px` },
+    );
+    io.observe(root);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(peek);
+      bounce?.cancel();
+    };
+  }, [reduced]);
 
   useEffect(() => {
     const arrow = arrowRef.current;
@@ -47,7 +106,7 @@ export function LeafCta({ className = "" }: { className?: string }) {
     let bounce: Animation | undefined;
     const start = () => {
       bounce?.cancel();
-      bounce = arrow.animate(BOUNCE, { duration: 600, delay: WIPE_MS - 40 });
+      bounce = arrow.animate(BOUNCE, { duration: BOUNCE_MS, delay: WIPE_MS - 40 });
     };
     const stop = () => bounce?.cancel();
     const enter = (e: PointerEvent) => {
@@ -71,17 +130,18 @@ export function LeafCta({ className = "" }: { className?: string }) {
 
   return (
     <span
+      ref={rootRef}
       aria-hidden
-      className={`relative block size-10 rounded-full transition-transform duration-500 ease-spring group-hover/cta:scale-105 ${className}`}
+      className={`group/leaf relative block size-10 rounded-full transition-transform duration-500 ease-spring group-hover/cta:scale-105 ${className}`}
     >
       <span
-        className={`${layer} [clip-path:var(--rest)] group-hover/cta:[clip-path:var(--on)] group-has-focus-visible/cta:[clip-path:var(--on)] group-focus-visible/cta:[clip-path:var(--on)]`}
+        className={`${layer} [clip-path:var(--rest)] group-hover/cta:[clip-path:var(--on)] group-has-focus-visible/cta:[clip-path:var(--on)] group-focus-visible/cta:[clip-path:var(--on)] group-data-[arrow=true]/leaf:[clip-path:var(--on)]`}
         style={{ "--rest": ahead(0), "--on": ahead(2) } as React.CSSProperties}
       >
         <LogoIcon title="" className="size-full" />
       </span>
       <span
-        className={`${layer} [clip-path:var(--rest)] group-hover/cta:[clip-path:var(--on)] group-has-focus-visible/cta:[clip-path:var(--on)] group-focus-visible/cta:[clip-path:var(--on)]`}
+        className={`${layer} [clip-path:var(--rest)] group-hover/cta:[clip-path:var(--on)] group-has-focus-visible/cta:[clip-path:var(--on)] group-focus-visible/cta:[clip-path:var(--on)] group-data-[arrow=true]/leaf:[clip-path:var(--on)]`}
         style={{ "--rest": behind(0), "--on": behind(2) } as React.CSSProperties}
       >
         <svg

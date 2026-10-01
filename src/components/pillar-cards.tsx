@@ -63,40 +63,57 @@ const TONES = [
 
 type ArtProps = { still: boolean };
 
-/** Intention: a target, crosshairs locking onto the center. */
+/**
+ * Intention: a bullseye. An arrow flies in from the top right (the way the
+ * leaf points), strikes dead center, the bull pops and a ripple runs out
+ * through the rings; then it clears and goes again. Same 3.2s rhythm as the
+ * other backs: arrive, hold, reset.
+ */
 function TargetArt({ still }: ArtProps) {
-  const lock = (dx: number, dy: number) =>
-    still ? null : (
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        values={`${dx},${dy}; 0,0; 0,0; ${dx},${dy}`}
-        keyTimes="0; 0.38; 0.72; 1"
-        dur="3.2s"
-        repeatCount="indefinite"
-        calcMode="spline"
-        keySplines="0.2 0.8 0.2 1; 0 0 1 1; 0.4 0 0.8 0.4"
-      />
-    );
+  const loop = { dur: "3.2s", repeatCount: "indefinite" } as const;
   return (
-    <svg viewBox="0 0 76 76" fill="none" aria-hidden className="size-16 shrink-0 sm:size-[4.5rem]">
-      <circle cx="38" cy="38" r="30" stroke="currentColor" strokeOpacity="0.35" strokeWidth="2" strokeDasharray="6 7">
+    <svg viewBox="0 0 76 76" fill="none" aria-hidden className="size-16 shrink-0 overflow-visible sm:size-[4.5rem]">
+      <circle cx="38" cy="38" r="31" stroke="currentColor" strokeOpacity="0.28" strokeWidth="3.5" />
+      <circle cx="38" cy="38" r="21.5" stroke="currentColor" strokeOpacity="0.5" strokeWidth="3.5" />
+      <circle cx="38" cy="38" r="12" stroke="currentColor" strokeOpacity="0.75" strokeWidth="3.5" />
+
+      {/* Impact ripple */}
+      {!still && (
+        <circle cx="38" cy="38" r="6" stroke="var(--color-lapis)" strokeWidth="2.5" opacity="0">
+          <animate attributeName="r" values="6; 6; 34; 34" keyTimes="0; 0.38; 0.62; 1" {...loop} />
+          <animate attributeName="opacity" values="0; 0; 0.9; 0; 0" keyTimes="0; 0.379; 0.39; 0.62; 1" {...loop} />
+        </circle>
+      )}
+
+      <circle cx="38" cy="38" r="6" fill="var(--color-lapis)">
         {!still && (
-          <animateTransform attributeName="transform" type="rotate" from="0 38 38" to="360 38 38" dur="14s" repeatCount="indefinite" />
+          <animate attributeName="r" values="6; 6; 8.5; 6; 6" keyTimes="0; 0.38; 0.44; 0.52; 1" {...loop} />
         )}
       </circle>
-      <circle cx="38" cy="38" r="17" stroke="currentColor" strokeOpacity="0.55" strokeWidth="2" />
-      <g stroke="var(--color-lapis)" strokeWidth="3.5" strokeLinecap="round">
-        <line x1="38" y1="4" x2="38" y2="20">{lock(0, -8)}</line>
-        <line x1="38" y1="56" x2="38" y2="72">{lock(0, 8)}</line>
-        <line x1="4" y1="38" x2="20" y2="38">{lock(-8, 0)}</line>
-        <line x1="56" y1="38" x2="72" y2="38">{lock(8, 0)}</line>
+
+      {/* The arrow: tip at the center, shaft and fletching up and to the right. */}
+      <g opacity={still ? 1 : 0}>
+        {!still && (
+          <>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="26,-26; 0,0; 0,0; 0,0"
+              keyTimes="0; 0.38; 0.8; 1"
+              calcMode="spline"
+              keySplines="0.5 0 0.9 0.5; 0 0 1 1; 0 0 1 1"
+              {...loop}
+            />
+            <animate attributeName="opacity" values="0; 1; 1; 0; 0" keyTimes="0; 0.12; 0.74; 0.86; 1" {...loop} />
+          </>
+        )}
+        <g stroke="var(--color-ink)" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="39.5" y1="36.5" x2="62" y2="14" strokeWidth="3" />
+          {/* Fletching: feathers sweep back toward the tail, so it reads as
+              an arrow that has landed, not one pointing away. */}
+          <path d="M55 21 60.7 21M55 21 55 15.3M58.5 17.5 64.2 17.5M58.5 17.5 58.5 11.8" strokeWidth="2.25" />
+        </g>
       </g>
-      <circle cx="38" cy="38" r="6" fill="var(--color-ink)">
-        {!still && (
-          <animate attributeName="r" values="0; 0; 7; 6; 6; 0" keyTimes="0; 0.32; 0.42; 0.48; 0.74; 0.9" dur="3.2s" repeatCount="indefinite" />
-        )}
-      </circle>
     </svg>
   );
 }
@@ -249,7 +266,7 @@ export function PillarCards({ ref }: { ref?: React.Ref<HTMLUListElement> }) {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-2xl font-semibold tracking-tight text-ink">{p.word}</span>
-                <span className="text-sm leading-relaxed text-ink/65">{p.line}</span>
+                <span className="text-sm leading-relaxed text-ink/75">{p.line}</span>
               </span>
 
               {/* Back */}

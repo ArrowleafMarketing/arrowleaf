@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /*
-  Arrowleaf Marketing + Media — design tokens.
+  Arrowleaf Marketing + Media: design tokens.
   Mirrors src/lib/brand.ts; keep the two in sync.
 
   The brand is light-first: an Extra Light Yellow canvas with near-black text.
-  There is deliberately no prefers-color-scheme inversion — the palette is part
+  There is deliberately no prefers-color-scheme inversion, the palette is part
   of the brand identity, not a user preference.
 */
 
@@ -28,7 +28,7 @@
   /* --- Semantic aliases ---------------------------------------------- */
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
-  --color-muted: color-mix(in oklab, var(--color-ink) 62%, transparent);
+  --color-muted: color-mix(in oklab, var(--color-ink) 72%, transparent);
   --color-hairline: color-mix(in oklab, var(--color-ink) 14%, transparent);
 
   /* --- Type ----------------------------------------------------------
@@ -49,7 +49,7 @@
 
   /* --- Motion --------------------------------------------------------- */
   --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* Overshoots its target slightly, then settles — for small playful turns
+  /* Overshoots its target slightly, then settles, for small playful turns
      like the CTA arrow swinging up-right. */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
@@ -61,7 +61,7 @@
 }
 
 /*
-  Glow drift — the animated version of the brand mesh gradient.
+  Glow drift: the animated version of the brand mesh gradient.
 
   Each blob runs three independent animations on three separate properties:
   horizontal sway (`transform`), vertical sway (`translate`) and a slow
@@ -141,7 +141,7 @@
 }
 
 /*
-  Page gutter — the one side padding every section uses. The site runs edge to
+  Page gutter: the one side padding every section uses. The site runs edge to
   edge (no centered max-width column); this is just enough breathing room so
   text never touches the glass. Fluid: 20px on phones up to 48px on wide
   screens. Change it here to tighten or loosen the whole site at once.
@@ -157,11 +157,11 @@
 }
 
 /*
-  `pin:` — when the hero pins for the scroll-to-fullscreen reel: any desktop
+  `pin:`, when the hero pins for the scroll-to-fullscreen reel: any desktop
   or laptop window (wide enough for the pillars and reel to share one row) with
   motion allowed. The hero's vertical spacing scales with screen height under
   this variant (`pin:…svh` sizes in hero.tsx and showcase-scroll.tsx) so it
-  fits one screen on short laptops too — e.g. a 13" MacBook Pro in Chrome with
+  fits one screen on short laptops too: e.g. a 13" MacBook Pro in Chrome with
   the Dock and bookmarks bar leaves only ~690px. The 34rem floor only drops
   out genuinely tiny windows.
 */
@@ -226,7 +226,7 @@
   background-color: var(--color-paper);
 }
 
-/* Faint pixel grid — the brand's textural pattern, as a pure-CSS layer. */
+/* Faint pixel grid: the brand's textural pattern, as a pure-CSS layer. */
 @utility bg-pixel-grid {
   background-image:
     linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
@@ -252,7 +252,7 @@
 
   Applied as `sm:stack-card`, so the overlap only kicks in at `sm` and above.
   Sticky stacking reads correctly only when a card is shorter than the space
-  below the header — otherwise it scrolls past before it can pin and its content
+  below the header: otherwise it scrolls past before it can pin and its content
   gets clipped. Phone viewports can't guarantee that (five offerings plus large
   dynamic type will exceed a small screen), so on phones the cards fall back to
   a normal flow list. They still read as a colored sequence; they just don't
@@ -294,8 +294,9 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    /* Body copy is Poppins ExtraLight per the style guide. */
-    font-weight: 200;
+    /* Body copy is Poppins Light: the style guide's ExtraLight (200) read
+       too thin on screen at body sizes, so it's one step heavier. */
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -313,7 +314,7 @@
   }
 
   /*
-    The signature Arrowleaf heading move: "Title example" — Poppins SemiBold
+    The signature Arrowleaf heading move: "Title example", Poppins SemiBold
     with one word set in IBM Plex Serif italic. Mark that word with <em>.
   */
   h1 em,
@@ -338,7 +339,7 @@
 }
 
 /*
-  Page transitions — React <ViewTransition>, see page-transition.tsx.
+  Page transitions: React <ViewTransition>, see page-transition.tsx.
 
   The incoming page drops down from the top like a new window sliding over
   the old one; the old page sinks back and fades beneath it. Motion is in
@@ -416,7 +417,7 @@
 }
 
 /*
-  Reveals — see docs/MOTION.md and reveal-controller.tsx.
+  Reveals: see docs/MOTION.md and reveal-controller.tsx.
 
   Mark a content block with `data-reveal` (or `data-reveal="fade"` for
   opacity only). How it arrives depends on how the reader got to it:

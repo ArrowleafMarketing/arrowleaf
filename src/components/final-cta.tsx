@@ -15,7 +15,7 @@ export function FinalCta() {
         className="absolute -right-[12vw] top-1/2 -z-10 w-[62vw] max-w-[46rem] -translate-y-1/2 text-ink/[0.07] sm:-right-[6vw] sm:w-[48vw]"
       />
       <div className="page-gutter py-24 sm:py-32">
-        <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/70">
+        <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/80">
           Let&apos;s talk
         </p>
         <h2 data-reveal className="mt-4 max-w-4xl text-[clamp(2.75rem,7vw,6rem)] leading-[1.02] tracking-[-0.03em]">

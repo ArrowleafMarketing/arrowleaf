@@ -7,17 +7,17 @@ import "./globals.css";
 
 /*
   Neither Poppins nor IBM Plex Serif is offered as a variable font, so weights
-  are declared explicitly. Keep these lists tight — every weight is a separate
+  are declared explicitly. Keep these lists tight, every weight is a separate
   self-hosted file.
 
-  Poppins: 200 ExtraLight (body), 400 Regular (body alt), 500 Medium,
+  Poppins: 200 ExtraLight, 300 Light (body), 400 Regular (body alt), 500 Medium,
   600 SemiBold (headings), 700 Bold (emphasis).
   IBM Plex Serif: 400 italic (heading accent), 700 (eyebrows/section headers).
 */
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["200", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -32,11 +32,11 @@ const plexSerif = IBM_Plex_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title: {
-    default: `${brand.name} — ${brand.tagline}`,
+    default: `${brand.name} | ${brand.tagline}`,
     template: `%s | ${brand.shortName}`,
   },
   description:
-    "Arrowleaf is a boutique marketing and media team in Boise. We put brand, content, and paid growth on one shared plan — and prove results with clear, repeatable measurement every month.",
+    "Arrowleaf is a strategic growth partner for established businesses at pivotal moments: brands you're proud of, and marketing engines that deliver results.",
   applicationName: brand.name,
   openGraph: {
     type: "website",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // `themeColor` belongs on the viewport export as of Next 14 — it is
+  // `themeColor` belongs on the viewport export as of Next 14, it is
   // deprecated on the metadata object.
   themeColor: colors.secondary.black,
   colorScheme: "light",

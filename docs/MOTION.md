@@ -89,9 +89,9 @@ Reuse these before building something new.
 | "Touch me" hop | `pillar-cards.tsx` | Double bounce (4px, then 2px), one card at a time, stops once used |
 | Flip card | `pillar-cards.tsx` | 700ms `ease-spring`; hover on mouse, tap on touch |
 | Folder-tab stack | `services-stack.tsx` | Scroll-linked title collapse |
-| Leaf → arrow CTA | `leaf-cta.tsx`, `cta-pill.tsx` | 420ms diagonal wipe, then the same double bounce pointed up-right. Every primary "go" button uses it |
+| Leaf → arrow CTA | `leaf-cta.tsx`, `cta-pill.tsx` | 420ms diagonal wipe, then the same double bounce pointed up-right. Every primary "go" button uses it. Crossing 60% down the screen, it peeks (arrow, then back to the logo) with a mouse, and turns to the arrow and stays on touch; scrolling back past the line reverses it |
 | Work window | `work-preview.tsx` | The creative rests in a corner window and opens across the card on hover, 700ms `ease-brand` |
-| Ticker | `testimonials.tsx` | `marquee` keyframes, 48s linear, pauses on hover, still under reduced motion |
+| Ticker | `client-logos.tsx` | Three rows of client logos on `marquee` keyframes, 100s linear (about 30px a second), middle row reversed, edges faded, never pauses; still under reduced motion |
 | Footer rise | `site-footer.tsx` | Scroll-driven (`animation-timeline: view()`); static where unsupported |
 | Arrow nudge | `ArrowIcon` in buttons and links | Small translate or rotate on hover, `ease-brand` |
 

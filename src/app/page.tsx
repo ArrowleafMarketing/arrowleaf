@@ -1,9 +1,9 @@
 import { AboutTeaser } from "@/components/about-teaser";
+import { ClientLogos } from "@/components/client-logos";
 import { FinalCta } from "@/components/final-cta";
 import { Hero } from "@/components/hero";
 import { PageTransition } from "@/components/page-transition";
 import { ServicesStack } from "@/components/services-stack";
-import { Testimonials } from "@/components/testimonials";
 import { WorkPreview } from "@/components/work-preview";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
         <ServicesStack />
         <WorkPreview />
         <AboutTeaser />
-        <Testimonials />
+        <ClientLogos />
         <FinalCta />
       </main>
     </PageTransition>

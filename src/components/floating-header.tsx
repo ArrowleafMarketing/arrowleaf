@@ -7,13 +7,13 @@ const DETACH_AT = 16;
 
 /**
  * The header's shell. Attached full-width at the top of the page; once the
- * page scrolls it detaches into a floating "liquid glass" capsule — still
+ * page scrolls it detaches into a floating "liquid glass" capsule, still
  * nearly full width, inset just enough to float (`--float-inset`: 8–16px),
  * rounded, frosted and brightening what's behind it, with a top-edge
  * highlight and a soft drop shadow. It re-docks at the top.
  *
  * The capsule's inner padding shrinks by the same inset, so the logo, nav and
- * CTA stay exactly where they are when it detaches — only the glass moves.
+ * CTA stay exactly where they are when it detaches, only the glass moves.
  *
  * Structure matters here:
  *  - The glass is its own layer behind the content, not a style on the

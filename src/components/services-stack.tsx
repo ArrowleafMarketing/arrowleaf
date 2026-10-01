@@ -162,7 +162,7 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
         {showHeader && (
           <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
             <div>
-              <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/60">
+              <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/70">
                 Solutions
               </p>
               <h2 data-reveal className="mt-2 text-3xl sm:text-4xl">

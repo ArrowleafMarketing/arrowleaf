@@ -1,5 +1,5 @@
 /**
- * Animated brand glow — soft color blobs drifting behind content.
+ * Animated brand glow: soft color blobs drifting behind content.
  *
  * The moving version of the style guide's mesh gradient: the same orange /
  * pink / magenta / cyan field from the cover page, but alive. Each blob is a
@@ -11,7 +11,7 @@
  * a stop at waypoints, so the field keeps travelling. Keyframes live in
  * globals.css; the numbers here are the only tuning knobs.
  *
- * Accent colors are allowed here — gradients are exactly the "special
+ * Accent colors are allowed here: gradients are exactly the "special
  * circumstance" the style guide reserves them for.
  *
  * Drop it inside any `relative isolate overflow-hidden` container.
@@ -31,7 +31,7 @@ type Motion = {
 };
 
 type Blob = {
-  /** A brand color token, referenced as a CSS variable — never a raw hex. */
+  /** A brand color token, referenced as a CSS variable, never a raw hex. */
   color: string;
   /** Strength at the blob's center, as a percentage of the color. */
   alpha: number;
@@ -47,7 +47,7 @@ const EASE = "cubic-bezier(0.37, 0, 0.63, 1)";
   Positions are mobile-first, then overridden at `sm`. A phone hero is narrow
   and very tall, so the blobs stack down its length; a desktop hero is wide and
   short, so they spread across it. Blob width never drops below 26rem, which on
-  a phone is wider than the screen — that's what keeps the field full.
+  a phone is wider than the screen: that's what keeps the field full.
 */
 const blobs: readonly Blob[] = [
   {

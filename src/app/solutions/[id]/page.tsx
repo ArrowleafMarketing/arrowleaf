@@ -6,7 +6,7 @@ import { PageIntro } from "@/components/page-intro";
 import { PageTransition } from "@/components/page-transition";
 import { services } from "@/lib/services";
 
-// Mock page: one per service group, so the deck's cards have somewhere to go.
+// One page per service group: the intro and its offerings. Room to grow into full service pages.
 export function generateStaticParams() {
   return services.map((s) => ({ id: s.id }));
 }
@@ -49,7 +49,7 @@ export default async function ServicePage({ params }: Props) {
           <Link
             href="/solutions"
             data-reveal
-            className="group mt-12 inline-flex items-center gap-2 text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+            className="group mt-12 inline-flex items-center gap-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink"
           >
             <ArrowIcon className="rotate-180 transition-transform duration-300 ease-brand group-hover:-translate-x-0.5" />
             All solutions

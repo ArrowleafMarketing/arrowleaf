@@ -27,9 +27,9 @@ export function SiteFooter() {
           <p className="text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
             Marketing <em className="font-serif font-normal tracking-normal text-volt">made clear</em>.
           </p>
-          <p className="mt-5 max-w-sm text-base text-white/65">
-            Brand, content, and paid growth on one shared plan, proven every
-            month.
+          <p className="mt-5 max-w-sm text-base text-white/75">
+            A trusted growth partner for established businesses at pivotal
+            moments.
           </p>
           <CtaPill href="/contact" tone="volt" className="mt-8">
             Let&apos;s talk
@@ -37,7 +37,7 @@ export function SiteFooter() {
         </div>
 
         <nav aria-label="Solutions">
-          <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/50">
+          <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
             Solutions
           </p>
           <ul className="mt-5 grid gap-3">
@@ -51,7 +51,7 @@ export function SiteFooter() {
 
         <div className="grid content-start gap-12 sm:grid-cols-2 lg:grid-cols-1">
           <nav aria-label="Company">
-            <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/50">
+            <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
               Company
             </p>
             <ul className="mt-5 grid gap-3">
@@ -63,15 +63,27 @@ export function SiteFooter() {
             </ul>
           </nav>
           <div>
-            <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/50">
-              Based in
+            <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
+              Get in touch
             </p>
-            <p className="mt-5 text-base text-white/80">{brand.locality}</p>
+            <ul className="mt-5 grid gap-3 text-base">
+              <li>
+                <a href={`mailto:${brand.email}`} className="text-white/80 transition-colors hover:text-white">
+                  {brand.email}
+                </a>
+              </li>
+              <li>
+                <a href={brand.phoneHref} className="text-white/80 transition-colors hover:text-white">
+                  {brand.phone}
+                </a>
+              </li>
+              <li className="text-white/80">{brand.locality}</li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <div className="page-gutter flex flex-col gap-3 border-t border-white/15 py-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
+      <div className="page-gutter flex flex-col gap-3 border-t border-white/15 py-6 text-xs text-white/65 sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {new Date().getFullYear()} {brand.name}
         </p>

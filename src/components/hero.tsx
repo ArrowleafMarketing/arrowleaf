@@ -22,9 +22,10 @@ export function Hero() {
               the headline where it was. */}
           <h1 data-reveal className="mt-10 text-display-fit pin:mt-[min(2.5rem,5svh)]">Growth without the guesswork</h1>
 
-          <p data-reveal className="mx-auto mt-7 max-w-2xl text-lg text-ink/70 sm:text-xl pin:mt-[min(1.75rem,3svh)]">
-            Websites, apps, automation, and AI, built by one senior team and
-            tied to the numbers your business runs on.
+          <p data-reveal className="mx-auto mt-7 max-w-3xl text-balance text-lg text-ink/80 sm:text-xl pin:mt-[min(1.75rem,3svh)]">
+            A strategic growth partner for established businesses at pivotal
+            moments, building brands you&apos;re proud of and marketing engines
+            that deliver results.
           </p>
 
           <div data-reveal className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row pin:mt-[min(2.5rem,4.4svh)]">

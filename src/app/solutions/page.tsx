@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "Strategy & Research, Technology & AI, Brand & Creative, and Marketing & Growth: four disciplines on one plan.",
 };
 
-// Mock page: reuses the home page's solutions deck under its own intro.
+// Reuses the home page's solutions deck under its own intro.
 export default function SolutionsPage() {
   return (
     <PageTransition>

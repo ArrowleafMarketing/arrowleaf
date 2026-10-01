@@ -1,8 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/arrow-icon";
 import { InViewVideo } from "@/components/in-view-video";
 import { LeafCta } from "@/components/leaf-cta";
-import { LeafShape } from "@/components/leaf-shape";
 import { cases, type CaseStudy } from "@/lib/cases";
 
 /**
@@ -18,7 +18,8 @@ import { cases, type CaseStudy } from "@/lib/cases";
  * The trend line draws itself when the card arrives (`data-draw`, part of the
  * reveal system in globals.css).
  *
- * Cases are MOCK data (src/lib/cases.ts).
+ * Cases come from src/lib/cases.ts (real client work; numbers from the
+ * team's case-study drafts).
  */
 export function WorkPreview() {
   const [feature, ...rest] = cases;
@@ -27,7 +28,7 @@ export function WorkPreview() {
       <div className="page-gutter py-24 sm:py-28">
         <header className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-end">
           <div>
-            <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/60">
+            <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/70">
               Results
             </p>
             <h2 data-reveal className="mt-3 text-hero">
@@ -35,7 +36,7 @@ export function WorkPreview() {
             </h2>
           </div>
           <div data-reveal className="flex flex-col items-start gap-5 lg:items-end lg:text-right">
-            <p className="max-w-md text-lg text-ink/70">
+            <p className="max-w-md text-lg text-ink/80">
               Creative is how we get there. Every case starts with what it moved,
               and where you can check it.
             </p>
@@ -60,7 +61,7 @@ export function WorkPreview() {
   );
 }
 
-function CaseCard({
+export function CaseCard({
   study,
   feature = false,
   className = "",
@@ -71,7 +72,7 @@ function CaseCard({
 }) {
   return (
     <Link
-      href="/results"
+      href={`/results#${study.id}`}
       data-reveal
       data-cta-host
       aria-label={`${study.client}: ${study.metric.value} ${study.metric.label}. View results.`}
@@ -88,13 +89,17 @@ function CaseCard({
             : "lg:[clip-path:inset(24%_4%_4%_60%_round_14px)]"
         } [clip-path:inset(calc(100%_-_15rem)_1rem_1rem_1rem_round_14px)]`}
       >
-        <CaseMedia kind={study.media} />
-        {/* Footage gets darkened under the white text; the brand-color
-            layouts are already a text-safe ground. */}
-        {study.media === "reel" && (
-          <div className="absolute inset-0 bg-ink/0 transition-colors duration-700 ease-brand group-hover/cta:bg-ink/60 group-focus-visible/cta:bg-ink/60" />
-        )}
-        <p className="absolute bottom-7 right-8 text-right text-xs font-medium text-white transition-[bottom,right] duration-700 ease-brand lg:bottom-[calc(4%+0.75rem)] lg:right-[calc(4%+0.9rem)] lg:group-hover/cta:bottom-5 lg:group-hover/cta:right-6">
+        <CaseMediaLayer media={study.media} framed={!feature} />
+        {/* Darkens the footage under the white text once the window opens. */}
+        <div className="absolute inset-0 bg-ink/0 transition-colors duration-700 ease-brand group-hover/cta:bg-ink/60 group-focus-visible/cta:bg-ink/60" />
+        {/* Keeps the caption legible over bright footage while it's small. */}
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink/55 to-transparent" />
+        <p
+          className={`absolute bottom-7 right-8 text-right text-xs font-medium text-white transition-[bottom,right] duration-700 ease-brand lg:bottom-[calc(4%+0.75rem)] lg:right-[calc(4%+0.9rem)] lg:group-hover/cta:bottom-5 lg:group-hover/cta:right-6 ${
+            // Wrap inside the corner window rather than spill past its edge.
+            feature ? "lg:max-w-[44%]" : "lg:max-w-[30%]"
+          }`}
+        >
           {study.work}
         </p>
       </div>
@@ -108,7 +113,7 @@ function CaseCard({
         <div className="flex items-start justify-between gap-4">
           <p className="text-sm">
             <span className="font-semibold">{study.client}</span>
-            <span className="text-ink/55 transition-colors duration-500 group-hover/cta:text-white/70">
+            <span className="text-ink/65 transition-colors duration-500 group-hover/cta:text-white/80">
               {" "}
               · {study.industry}
             </span>
@@ -129,12 +134,10 @@ function CaseCard({
           </p>
         </div>
 
-        <div className={`flex flex-col items-start gap-2 ${feature ? "mt-8" : "mt-5"}`}>
-          <Trend values={study.trend} />
-          <p className="text-xs leading-relaxed text-ink/60 transition-colors duration-500 group-hover/cta:text-white/80">
-            {study.before} → <span className="font-semibold">{study.after}</span>
-            <br />
-            in {study.period}
+        <div className={`flex flex-col items-start gap-2 ${feature ? "mt-8" : "mt-4"}`}>
+          {study.trend && <Trend values={study.trend} />}
+          <p className="max-w-[16rem] text-sm leading-relaxed text-ink/70 transition-colors duration-500 group-hover/cta:text-white/80">
+            {study.detail}
           </p>
         </div>
 
@@ -144,7 +147,7 @@ function CaseCard({
               <div key={m.label}>
                 <dt className="sr-only">{m.label}</dt>
                 <dd className="text-3xl font-semibold tracking-tight">{m.value}</dd>
-                <dd className="mt-1 text-xs text-ink/60 transition-colors duration-500 group-hover/cta:text-white/75">
+                <dd className="mt-1 text-xs text-ink/70 transition-colors duration-500 group-hover/cta:text-white/85">
                   {m.label}
                 </dd>
               </div>
@@ -154,7 +157,7 @@ function CaseCard({
 
         <div className="pt-8 lg:mt-auto">
           {feature && (
-            <p className="mb-3 text-xs text-ink/50 transition-colors duration-500 group-hover/cta:text-white/70">
+            <p className="mb-3 text-xs text-ink/60 lg:max-w-[45%] xl:max-w-[40%] transition-colors duration-500 group-hover/cta:text-white/80">
               Source: {study.source}
             </p>
           )}
@@ -205,43 +208,41 @@ function Trend({ values }: { values: readonly number[] }) {
   );
 }
 
-/**
- * Stand-in creative for the mock cases: the showreel, or an ad-style layout
- * in brand colors. Replace with the real work.
- */
-function CaseMedia({ kind }: { kind: CaseStudy["media"] }) {
-  if (kind === "reel") {
-    return <InViewVideo className="absolute inset-0 size-full object-cover" />;
-  }
-  if (kind === "lapis-ad") {
+/** The client's own footage or photography, filling the work window. */
+/** Center of a small card's corner window at rest, in % of the card (lg and up). */
+const SMALL_WINDOW_CENTER = [78, 60] as const;
+
+function CaseMediaLayer({ media, framed = false }: { media: CaseStudy["media"]; framed?: boolean }) {
+  if (media.kind === "video") {
     return (
-      <div className="absolute inset-0 overflow-hidden bg-lapis text-white">
-        <LeafShape className="absolute -left-[10%] -top-[30%] w-[55%] text-white/[0.06]" />
-        {/* The "ad": inside the corner window's footprint, so it's what the
-            window shows at rest. */}
-        <div className="absolute bottom-[4%] right-[4%] top-[24%] w-[36%] overflow-hidden max-lg:top-auto max-lg:h-60 max-lg:w-auto max-lg:left-4">
-          <LeafShape className="absolute -bottom-[16%] -left-[16%] w-[55%] text-volt max-lg:-right-8 max-lg:-top-10 max-lg:bottom-auto max-lg:left-auto max-lg:w-36" />
-          <div className="absolute left-[10%] top-[10%] w-[80%] max-lg:w-[60%]">
-            <p className="text-[clamp(1.05rem,1.5vw,1.45rem)] font-semibold leading-tight">
-              Smile like you <em className="font-serif font-normal">mean it</em>.
-            </p>
-            <p className="mt-3 inline-block rounded-full bg-white px-3 py-1 text-[0.65rem] font-semibold text-lapis">
-              Book online
-            </p>
-          </div>
-        </div>
-      </div>
+      <InViewVideo
+        mp4={media.mp4}
+        webm={media.webm}
+        poster={media.poster}
+        className="absolute inset-0 size-full object-cover"
+      />
     );
   }
+  const image = (
+    <Image
+      src={media.src}
+      alt={media.alt}
+      fill
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      className="object-cover"
+      style={{ objectPosition: media.position }}
+    />
+  );
+  if (!framed || !media.focus) return image;
+  // Slide the subject into the small window at rest; open back to the full frame.
+  const [fx, fy] = media.focus;
+  const rest = `translate(${SMALL_WINDOW_CENTER[0] - fx}%, ${SMALL_WINDOW_CENTER[1] - fy}%)`;
   return (
-    <div className="absolute inset-0 overflow-hidden bg-neon-red text-white">
-      <div className="absolute right-[14%] top-[50%] flex h-[36%] w-[20%] min-w-16 flex-col items-center justify-center rounded-[40%_40%_12px_12px] bg-ink text-center">
-        <LeafShape className="w-[42%] text-white" />
-        <p className="mt-1.5 font-serif text-[0.55rem] font-bold uppercase tracking-[0.18em]">
-          Basalt
-        </p>
-      </div>
-      <LeafShape className="absolute -bottom-[20%] left-[40%] w-[34%] rotate-90 text-white/20" />
+    <div
+      className="absolute inset-0 transition-transform duration-700 ease-brand lg:[transform:var(--rest)] lg:group-hover/cta:[transform:none] lg:group-focus-visible/cta:[transform:none]"
+      style={{ "--rest": rest } as React.CSSProperties}
+    >
+      {image}
     </div>
   );
 }

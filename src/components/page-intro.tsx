@@ -9,17 +9,18 @@ export function PageIntro({
   lede,
 }: {
   eyebrow: string;
-  title: string;
+  /** Mark the accent word with <em>, as in any heading. */
+  title: React.ReactNode;
   lede: string;
 }) {
   return (
     <section className="-mt-16 bg-mesh-cool">
       <div className="page-gutter pb-16 pt-36 sm:pb-24 sm:pt-44">
-        <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/60">
+        <p data-reveal className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/70">
           {eyebrow}
         </p>
         <h1 data-reveal className="mt-4 max-w-4xl text-hero">{title}</h1>
-        <p data-reveal className="mt-6 max-w-2xl text-lg text-ink/70 sm:text-xl">{lede}</p>
+        <p data-reveal className="mt-6 max-w-2xl text-lg text-ink/80 sm:text-xl">{lede}</p>
       </div>
     </section>
   );

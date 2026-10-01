@@ -2,7 +2,7 @@
  * The four service groups, in the order they stack on the home page.
  *
  * Ordering follows the brand's own narrative: strategy comes first ("strategy
- * beats tactics — sequence matters more than hustle"), then the systems that
+ * beats tactics: sequence matters more than hustle"), then the systems that
  * carry it, then the creative, then the growth engine that compounds.
  */
 
@@ -12,7 +12,7 @@ export type Service = {
   /** Two-digit index shown as the card's eyebrow. */
   index: string;
   title: string;
-  /** One sentence in brand voice — plain English, no jargon. */
+  /** One sentence in brand voice: plain English, no jargon. */
   summary: string;
   offerings: readonly string[];
   /**
@@ -80,7 +80,7 @@ export const services: readonly Service[] = [
     index: "02",
     title: "Technology & AI",
     summary:
-      "The sites, apps, and automations your marketing runs on — built with AI as a co-pilot, never an autopilot.",
+      "The sites, apps, and automations your marketing runs on, built with AI as a co-pilot and never an autopilot.",
     offerings: [
       "Website Design & Development",
       "App Design & Development",
@@ -108,7 +108,7 @@ export const services: readonly Service[] = [
     index: "04",
     title: "Marketing & Growth",
     summary:
-      "The engine that compounds — tested purposefully, scaled when it works, reported in plain English.",
+      "The engine that compounds. Tested purposefully, scaled when it works, and reported in plain English.",
     offerings: [
       "Digital Advertising",
       "Social Media",
@@ -121,7 +121,7 @@ export const services: readonly Service[] = [
 
 /**
  * The three-beat story the work follows. Reordered from "intention, impact,
- * integrate" into narrative sequence — why, then how, then what you get —
+ * integrate" into narrative sequence: why, then how, then what you get,
  * which maps onto the mission statement almost word for word.
  */
 export const pillars = [
@@ -133,7 +133,7 @@ export const pillars = [
   {
     word: "Integration",
     short: "One shared plan",
-    line: "Brand, content, and paid growth on one shared plan — not four disconnected ones.",
+    line: "Brand, content, and paid growth on one shared plan, not four disconnected ones.",
   },
   {
     word: "Impact",

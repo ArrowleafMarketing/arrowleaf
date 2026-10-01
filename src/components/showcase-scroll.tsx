@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { GlowField } from "@/components/glow-field";
 import { PillarCards } from "@/components/pillar-cards";
 import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
+import { animateScrollTo, easeInOutCubic } from "@/lib/scroll";
 
 /**
  * The hero stage: glow, headline copy (passed in as children), and a row along
@@ -20,12 +21,12 @@ import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
  *  - The reel is a full-stage video layer revealed through a `clip-path`
  *    window that starts exactly over the tile and opens to the full stage.
  *  - `growth` picks the direction:
- *      "down-left" — the tile's top edge stays attached to the page. The
+ *      "down-left": the tile's top edge stays attached to the page. The
  *        headline and pillars keep scrolling up 1:1 with the wheel (the stage
  *        is pinned, so they're shifted to look like normal scrolling), while
  *        the reel spills left across the pillars and down to the bottom of the
  *        screen. It's full-screen the moment its top reaches the top.
- *      "up-left" — the content stays put and the tile's bottom-right corner is
+ *      "up-left": the content stays put and the tile's bottom-right corner is
  *        the anchor; the reel opens up and left over everything.
  *  - The video inside is scaled and shifted so it stays cover-fit and centred
  *    in the window at every step, like an `object-fit: cover` box growing.
@@ -49,7 +50,7 @@ import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
  * behind the tile, travels out through the stack, fades at the outer edge and
  * comes back in at the front, so the colors keep rotating through every
  * position. The flow widens on hover (the "click me" cue). The shadow tracks
- * the reel's window as it grows — same rect, same corner radius — so it keeps
+ * the reel's window as it grows: same rect, same corner radius, so it keeps
  * flowing along the growing edge until it runs off the screen, fading just
  * before full screen. Under reduced motion it's a still stack.
  *
@@ -65,8 +66,6 @@ const GROW_SHARE = 0.78;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const easeInOutCubic = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const px = (n: number) => `${Math.round(n * 10) / 10}px`;
 
 /**
@@ -81,36 +80,6 @@ const FLOW_START_MS = 450;
 
 /** How long the click-to-expand scroll takes. */
 const EXPAND_SCROLL_MS = 1200;
-
-/**
- * Eased programmatic scroll to `y`. Native `behavior: "smooth"` can't be
- * timed and feels abrupt over this distance. Any wheel, touch or key input
- * hands control straight back to the visitor. Returns a cancel function.
- */
-function animateScrollTo(y: number, duration: number) {
-  const from = window.scrollY;
-  const dy = y - from;
-  let frame = 0;
-  let start = 0;
-  const stop = () => {
-    cancelAnimationFrame(frame);
-    window.removeEventListener("wheel", stop);
-    window.removeEventListener("touchstart", stop);
-    window.removeEventListener("keydown", stop);
-  };
-  const step = (now: number) => {
-    if (!start) start = now;
-    const t = Math.min(1, (now - start) / duration);
-    window.scrollTo(0, from + dy * easeInOutCubic(t));
-    if (t < 1) frame = requestAnimationFrame(step);
-    else stop();
-  };
-  window.addEventListener("wheel", stop, { passive: true });
-  window.addEventListener("touchstart", stop, { passive: true });
-  window.addEventListener("keydown", stop);
-  frame = requestAnimationFrame(step);
-  return stop;
-}
 
 export type ReelGrowth = "down-left" | "up-left";
 

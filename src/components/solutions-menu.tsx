@@ -9,7 +9,7 @@ import { pillars, services } from "@/lib/services";
 
 /**
  * "Solutions" mega-menu: a full-width panel showing the four departments as
- * cards, each in its own brand color — the same deck as the home page stack.
+ * cards, each in its own brand color, the same deck as the home page stack.
  *
  * Built as a disclosure (button + panel of links), not an ARIA `menu`, which is
  * the right pattern for site navigation.
@@ -20,7 +20,7 @@ import { pillars, services } from "@/lib/services";
  * menu, and when a link is followed.
  *
  * The panel and the page dim are positioned against the sticky header, which
- * is their nearest positioned ancestor — keep the wrappers here unpositioned.
+ * is their nearest positioned ancestor: keep the wrappers here unpositioned.
  */
 
 /** Grace period for the pointer to cross from the trigger into the panel. */
@@ -35,7 +35,7 @@ export function SolutionsMenu() {
   const closeTimer = useRef<number | undefined>(undefined);
   /**
    * True while the panel is open only because the mouse is hovering it. A
-   * click in that state confirms the menu rather than toggling it shut —
+   * click in that state confirms the menu rather than toggling it shut;
    * otherwise hover-then-click would open and immediately close it.
    */
   const openedByHover = useRef(false);
@@ -114,7 +114,7 @@ export function SolutionsMenu() {
             setOpen((o) => !o);
           }}
           className={`relative inline-flex items-center gap-1.5 py-2 text-sm font-medium transition-colors ${
-            open || onSolutions ? "text-ink" : "text-ink/70 hover:text-ink"
+            open || onSolutions ? "text-ink" : "text-ink/80 hover:text-ink"
           }`}
         >
           {onSolutions && (
@@ -140,7 +140,7 @@ export function SolutionsMenu() {
         {/*
           `invisible` (visibility: hidden) takes the closed panel out of the
           tab order and the accessibility tree. Visibility flips *instantly* on
-          open — if it transitioned, the panel would stay hidden for the first
+          open: if it transitioned, the panel would stay hidden for the first
           frame and a quick Enter-then-Tab would skip straight past it. On close
           it waits 300ms so the fade-out can play.
 
@@ -159,7 +159,7 @@ export function SolutionsMenu() {
           <div className="pointer-events-auto max-h-[calc(100dvh-5rem)] overflow-y-auto group-data-[floating=true]/header:mx-[calc(var(--float-inset)-var(--gutter))] rounded-brand-lg border border-hairline bg-paper shadow-[0_24px_80px_-24px_rgb(22_28_22_/_0.35)]">
             <div className="flex items-end justify-between gap-6 px-6 pt-5">
               <div>
-                <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/55">
+                <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-ink/65">
                   Solutions
                 </p>
                 <p className="mt-1.5 text-2xl font-semibold tracking-tight">
@@ -172,7 +172,7 @@ export function SolutionsMenu() {
               <Link
                 href="/solutions"
                 onClick={close}
-                className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-ink/70 transition-colors hover:text-ink"
+                className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-ink/80 transition-colors hover:text-ink"
               >
                 View all
                 <ArrowIcon className="transition-transform duration-300 ease-brand group-hover:translate-x-0.5" />
@@ -193,7 +193,7 @@ export function SolutionsMenu() {
                     onClick={close}
                     className={`group relative flex h-full flex-col overflow-hidden rounded-brand border p-5 transition-[translate,box-shadow] duration-300 ease-brand hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgb(22_28_22_/_0.45)] focus-visible:-translate-y-1 ${service.theme.surface} ${service.theme.text} ${service.theme.rule}`}
                   >
-                    {/* Oversized ghost numeral — the deck's index, as texture. */}
+                    {/* Oversized ghost numeral: the deck's index, as texture. */}
                     <span
                       aria-hidden
                       className="pointer-events-none absolute -right-1 -top-5 font-serif text-[7rem] font-bold leading-none opacity-[0.07] transition-transform duration-500 ease-brand group-hover:-translate-x-1 group-hover:translate-y-1"
@@ -240,7 +240,7 @@ export function SolutionsMenu() {
             </ul>
 
             <div className="flex flex-col gap-4 border-t border-hairline bg-white/70 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
-              <p className="text-sm text-ink/70">
+              <p className="text-sm text-ink/80">
                 <span className="font-serif italic text-ink">
                   {pillars.map((p) => p.word).join(" · ")}
                 </span>

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { GlowField } from "@/components/glow-field";
 import { LogoIcon, LogoLockup } from "@/components/logo";
 import { PageTransition } from "@/components/page-transition";
-import { colors, graphics, type, values, voice } from "@/lib/brand";
+import { beliefs, colors, compass, graphics, type, values, voice } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Brand reference",
@@ -119,7 +119,7 @@ export default function BrandPage() {
           </div>
 
           <h3 className="mt-10 text-sm font-medium uppercase tracking-wide text-muted">
-            Accent — special circumstances only, never on Volt Green
+            Accent: special circumstances only, never on Volt Green
           </h3>
           <div className="mt-3 grid gap-4 sm:grid-cols-3">
             <Swatch name="Cyan" hex={colors.accent.cyan} textClass="text-ink" />
@@ -132,7 +132,7 @@ export default function BrandPage() {
           <div className="space-y-6">
             <div>
               <p className="text-xs text-muted">
-                Display — Poppins SemiBold {type.heading.weight} + IBM Plex Serif italic
+                Display: Poppins SemiBold {type.heading.weight} + IBM Plex Serif italic
               </p>
               <p className="text-display">
                 Reach <em>your people</em>
@@ -146,7 +146,7 @@ export default function BrandPage() {
             </div>
             <div>
               <p className="text-xs text-muted">
-                Eyebrow — IBM Plex Serif Bold, uppercase
+                Eyebrow: IBM Plex Serif Bold, uppercase
               </p>
               <p className="font-serif text-sm font-bold uppercase tracking-widest">
                 Our digital services
@@ -154,14 +154,14 @@ export default function BrandPage() {
             </div>
             <div>
               <p className="text-xs text-muted">
-                Body — Poppins ExtraLight {type.body.weight}
+                Body: Poppins Light {type.body.weight}
               </p>
               <p className="max-w-xl text-lg">
-                We show plans, budgets, and performance in plain English. We are{" "}
-                <strong className="font-semibold">accountable stewards</strong> of
-                our clients&apos; ad spend, and we{" "}
-                <span className="mark-volt">test purposefully</span> and scale what
-                works.
+                We are{" "}
+                <strong className="font-semibold">strategic growth partners</strong>,
+                transforming businesses into brands they&apos;re proud of and{" "}
+                <span className="mark-volt">marketing engines</span> that deliver
+                results.
               </p>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function BrandPage() {
 
         <Section eyebrow="Graphics" title={<>Gradients &amp; pattern</>}>
           <p className="text-sm text-muted">
-            Animated glow — the home hero background. Drop{" "}
+            Animated glow, the home hero background. Drop{" "}
             <code className="font-mono text-xs">&lt;GlowField /&gt;</code> into
             any <code className="font-mono text-xs">relative isolate overflow-hidden</code>{" "}
             container. Freezes under reduced motion.
@@ -180,7 +180,7 @@ export default function BrandPage() {
           </div>
 
           <p className="mt-8 text-sm text-muted">
-            Static CSS mesh utilities — no image request, scales to any section.
+            Static CSS mesh utilities: no image request, scales to any section.
           </p>
           <div className="mt-3 grid gap-4 sm:grid-cols-2">
             <div className="flex h-40 items-end rounded-brand bg-mesh-warm p-3">
@@ -213,7 +213,14 @@ export default function BrandPage() {
         </Section>
 
         <Section eyebrow="Voice" title={<>How we sound</>}>
-          <p className="max-w-2xl text-lg">{voice.summary}</p>
+          <p className="max-w-2xl text-2xl font-semibold leading-snug tracking-tight">
+            {compass.positioning}
+          </p>
+          <p className="mt-4 max-w-2xl text-lg">{voice.summary}</p>
+          <p className="mt-2 text-sm text-muted">
+            Source of truth: Mission · Vision · Values · Beliefs · Perspective (2026),
+            summarized in docs/BRAND.md.
+          </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {voice.traits.map((t) => (
               <span
@@ -227,16 +234,25 @@ export default function BrandPage() {
           <h3 className="mt-10 text-sm font-medium uppercase tracking-wide text-muted">
             Values
           </h3>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
             {values.map((v) => (
-              <span
-                key={v}
-                className="rounded-brand bg-lapis px-3 py-1 text-xs uppercase tracking-wide text-white"
-              >
-                {v}
-              </span>
+              <div key={v.name} className="rounded-brand bg-lapis p-4 text-white">
+                <dt className="text-xs font-medium uppercase tracking-wide">{v.name}</dt>
+                <dd className="mt-1 text-sm text-white/80">{v.body}</dd>
+              </div>
             ))}
-          </div>
+          </dl>
+          <h3 className="mt-10 text-sm font-medium uppercase tracking-wide text-muted">
+            Beliefs
+          </h3>
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+            {beliefs.map((b) => (
+              <div key={b.name} className="rounded-brand border border-hairline bg-white p-4">
+                <dt className="text-xs font-medium uppercase tracking-wide">{b.name}</dt>
+                <dd className="mt-1 text-sm text-muted">{b.body}</dd>
+              </div>
+            ))}
+          </dl>
           <h3 className="mt-10 text-sm font-medium uppercase tracking-wide text-muted">
             We don&apos;t
           </h3>

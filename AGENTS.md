@@ -1,12 +1,12 @@
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version has breaking changes: APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 
 Notes already confirmed for **Next.js 16.2.9** in this repo:
 
-- `<Image priority>` is **deprecated** — use `preload` instead.
+- `<Image priority>` is **deprecated**: use `preload` instead.
 - `themeColor`, `colorScheme`, and `viewport` are **deprecated** on the
-  `metadata` object — use the separate `export const viewport: Viewport`.
+  `metadata` object: use the separate `export const viewport: Viewport`.
 - Styling is **Tailwind v4**: tokens go in `@theme` inside
   `src/app/globals.css`. There is no `tailwind.config.js`. Custom utilities use
   `@utility`, not `@layer utilities`.
@@ -25,7 +25,7 @@ Notes already confirmed for **Next.js 16.2.9** in this repo:
 ## The brand comes first
 
 This is the website for **Arrowleaf Marketing + Media**, a boutique marketing
-agency. The brand is the product — getting it visibly right matters more here
+agency. The brand is the product: getting it visibly right matters more here
 than on a typical app.
 
 **Read `docs/BRAND.md` before writing any UI.** It is the digested style guide:
@@ -38,19 +38,21 @@ palette with usage rules, typography roles, logo variants, voice, and personas.
   need isn't a token, it probably isn't in the brand.
 - **Never put accent colors (cyan, orange, magenta) on Volt Green.**
 - On Lapis Blue and Neon Red, text and logo go **white**.
-- Headings are Poppins SemiBold with the accent word in IBM Plex Serif italic —
+- Headings are Poppins SemiBold with the accent word in IBM Plex Serif italic:
   write it as `<h1>Marketing <em>made clear</em>.</h1>`; `globals.css` handles
   the rest.
-- Body copy is Poppins ExtraLight (200). It's already the `body` default.
+- Body copy is Poppins Light (300), one step heavier than the style guide's
+  ExtraLight for on-screen legibility. It's already the `body` default. Keep
+  secondary text at `text-ink/70` or darker (`/80` for ledes and body).
 - Use `<LogoIcon>` / `<LogoLockup>` from `@/components/logo` rather than
-  `<img>` — they inherit `currentColor` so the color rules above just work.
+  `<img>`: they inherit `currentColor` so the color rules above just work.
 - **The site runs edge to edge.** Sections span the full window with the
-  `page-gutter` utility for side padding — never wrap a section in a centered
+  `page-gutter` utility for side padding: never wrap a section in a centered
   `max-w-*` container. Capping a *text block's* width for readability
   (`max-w-2xl` on a paragraph) is fine.
 - **Every page animates in via `PageTransition`.** Wrap each page's `<main>`
   in it, give that `<main>` `bg-paper` (the incoming page is an opaque window
-  sliding over the old one), and use `next/link` for internal links — a plain
+  sliding over the old one), and use `next/link` for internal links, a plain
   `<a>` does a full reload and skips the transition. The header lives in the
   root layout and is pinned out of the animation. For links to a `#section` on
   another page, render `<HashScroll />` on the target page.
@@ -69,19 +71,40 @@ palette with usage rules, typography roles, logo variants, voice, and personas.
 
 A brand value lives in three places. Change one, change all:
 
-1. `src/lib/brand.ts` — TypeScript constants
-2. `src/app/globals.css` — `@theme` tokens
-3. `/brand` route — the live reference page
+1. `src/lib/brand.ts`, TypeScript constants
+2. `src/app/globals.css`, `@theme` tokens
+3. `/brand` route, the live reference page
 
-### Voice
+### Positioning and voice
 
-Clear, direct, jargon-free — "a trusted friend who happens to know their stuff
-about marketing." No hype, no black-box language, no overpromising. When writing
-site copy, check it against the "What we don't do" list in `docs/BRAND.md`.
+**The source of truth is the 2026 Mission · Vision · Values · Beliefs ·
+Perspective** (`docs/source/Arrowleaf_MVVBP.pdf`, summarized in
+`docs/BRAND.md` §1 and §3, and in code as `compass`, `values` and `beliefs`
+in `src/lib/brand.ts`). It supersedes the style guide's mission, beliefs and
+values.
+
+- Arrowleaf is **a trusted growth partner for established businesses at
+  pivotal moments**: "Not a vendor. Not a volume agency."
+- Voice: clarity, confidence, and forward motion. Plain English, warm,
+  relationship-first, honest; results as proof of the partnership. No hype,
+  no black box, no overpromising, never speed over quality.
+- **The vision's revenue targets are internal.** Never put them on the site.
+- Pull mission, values and beliefs from `src/lib/brand.ts` rather than
+  retyping them, so the site stays in step with the document.
+
+- **Never use em dashes (the long dash), anywhere**: site copy, alt text,
+  metadata, mock data, comments and docs. They read as AI-written, which is
+  exactly what this site must not sound like. Rewrite the sentence with a
+  period, comma, colon or parentheses instead. `npm run lint` fails on an em
+  dash in code (`no-restricted-syntax` in `eslint.config.mjs`), including
+  `&mdash;` and `\u2014`.
+
+Check new copy against "What this means for the site" in `docs/BRAND.md` §1
+and `voice.avoid` in `src/lib/brand.ts`.
 
 ## Assets
 
-Curated brand assets are in `public/brand/` — see the inventory and the **asset
+Curated brand assets are in `public/brand/`, see the inventory and the **asset
 gaps** list in `docs/BRAND.md`. Notably: there is no primary logo lockup yet,
 and almost all photography in the original export is stock placeholder. Don't
 ship theme-placeholder imagery.

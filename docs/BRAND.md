@@ -1,13 +1,20 @@
-# Arrowleaf Marketing + Media — brand reference
+# Arrowleaf Marketing + Media: brand reference
 
-Digested from **[Arrowleaf] Brand Style Guide**, last updated September 2025
-(prepared by Arrowleaf Marketing and Media & Tyler Shae Powell).
+Digested from two sources:
+
+- **Arrowleaf Mission · Vision · Values · Beliefs · Perspective** (MVVBP,
+  2026), `docs/source/Arrowleaf_MVVBP.pdf`. **The source of truth for
+  positioning, voice and tone** (§1, §3). Where it and the style guide
+  disagree on anything but visuals, it wins.
+- **[Arrowleaf] Brand Style Guide**, last updated September 2025 (prepared by
+  Arrowleaf Marketing and Media & Tyler Shae Powell). The source for color,
+  type, logo and graphics (§4 onward).
 
 This file is the written reference. The machine-readable versions live in:
 
-- `src/lib/brand.ts` — TypeScript constants (metadata, alt text, palette)
-- `src/app/globals.css` — Tailwind v4 `@theme` tokens and brand utilities
-- `/brand` route — live rendering of every token, for eyeballing changes
+- `src/lib/brand.ts`, TypeScript constants (metadata, alt text, palette)
+- `src/app/globals.css`, Tailwind v4 `@theme` tokens and brand utilities
+- `/brand` route: live rendering of every token, for eyeballing changes
 
 When a brand value changes, update all three.
 
@@ -15,49 +22,93 @@ When a brand value changes, update all three.
 
 ## 1. Positioning
 
-**Unique value proposition.** We connect with our clients. We show plans,
-budgets, and performance in plain English. We are accountable stewards of our
-clients' ad spend. We create and perform as if our client's businesses were our
-own. We test purposefully and scale what works. We craft clean, usable creative
-that moves buyers.
+Source: MVVBP (2026), "an internal compass and external signal, guiding
+decisions, shaping culture, and aligning our work with what matters most."
 
-**What we don't do.** Gatekeep data. Play "black box." Confuse with jargon. Shy
-away from responsibility and transparency. Hide misses, sandbag results, or
-overpromise. Chase trends without strategy or experiment without learning.
+**The position.** *Not a vendor. Not a volume agency.* **A trusted growth
+partner** for established businesses at pivotal moments.
 
-**Mission.** Partner with owners to put brand, content, and paid growth on one
-shared plan — and prove results with clear, repeatable measurement every month.
+**Mission.** We are strategic growth partners, applying leading-edge methods
+to transform businesses into brands they're proud of and marketing engines
+that deliver results.
 
-**Vision.** Our clients run on a simple growth system: clear positioning,
-standout creative, and a test-and-scale engine that produces predictable
-pipeline. Arrowleaf is the boutique, senior team known for tying creative to
-revenue and making marketing decisions faster, together.
+**Vision** *(internal only; never publish the numbers)*. To ignite a
+million-dollar company within one year and reach $5 million in growth within
+three to five years, unlocking our clients' hidden potential by transforming
+their brands and marketing strategies. We empower both our clients and our
+team to unlock financial independence and support their wildest dreams.
 
-### Beliefs
-
-- Culture over skill.
-- Strategy beats tactics — sequence matters more than hustle.
-- Brand and performance compound; you need both to grow past plateau.
-- Quality outperforms volume when paired with consistent cadence.
-- Data should decide, not dictate — measure what matters, ignore vanity.
-- AI is a co-pilot, not autopilot — use it to speed craft, not replace it.
-- Ethical marketing wins long-term — permission, clarity, and real value.
-- Small, senior teams beat big, busy ones when accountability is clear.
-- Creative is a growth lever, not decoration.
+**Perspective.** Arrowleaf is in a season of momentum and opportunity: real
+growth, met with intention, focus, and discipline. This season is about
+sharpening our craft, choosing the right clients, investing deeply in our
+people, and laying the foundation for sustainable growth. Arrowleaf today is
+defined by **clarity, confidence, and forward motion**, growing with purpose
+and building something that lasts.
 
 ### Values
 
-Transparency · Standing Out (uniqueness) · Clarity · Helpfulness · Success ·
-Shared Interest · Exceptional Quality · Positivity · Integrity
+The principles that govern how we choose clients, treat our team, and deliver
+work. Non-negotiable, in every engagement.
+
+1. **Partnership.** We build long-term relationships and prioritize enduring
+   success over short-term wins.
+2. **Commitment.** We go above and beyond for client success, regardless of
+   immediate financial return.
+3. **Quality.** No shortcuts. No rushed work. We refuse to sacrifice quality
+   for speed or convenience. Standards first.
+4. **People First.** We trust, protect, and invest in our team, because strong
+   people build strong companies.
+5. **Alignment.** We choose right-fit clients built on mutual trust and shared
+   values.
+
+### Beliefs
+
+What we hold to be true: the convictions beneath the strategy, the reasons we
+work the way we do.
+
+1. **Relationships First.** Real growth comes from real relationships, with
+   our clients, our team, and our community.
+2. **Community Impact.** Our work should uplift people beyond business
+   metrics.
+3. **Help Others Succeed.** When we help others get what they need, our
+   success follows.
+4. **Always Learning.** Growth requires curiosity and continuous improvement.
+5. **Integrity Always.** We do what's right, even when it's hard.
+
+### What this means for the site
+
+- Lead with **partnership and results together**: brands people are proud of
+  *and* marketing that performs. Results are proof of a good partnership, not
+  a replacement for one.
+- Speak to **established businesses at a pivotal moment** (a plateau, a
+  rebrand, a new market, a team stretched thin), not to startups or anyone
+  shopping on price.
+- Say **"partner"**, never "vendor"; favor "right fit", "long term", "with
+  you". Imply selectivity: we choose clients as much as they choose us.
+- Never promise speed at the cost of quality. "Fast" is fine only next to
+  "done right".
+- The vision's revenue targets are internal ambition. Don't put them on the
+  site.
+- **No em dashes, ever.** They read as AI-written. Use a period, comma,
+  colon or parentheses. (Enforced by `npm run lint`.)
+
+### Superseded (style guide, September 2025)
+
+The style guide's mission ("put brand, content, and paid growth on one shared
+plan"), its nine beliefs and nine values are replaced by the above. Still
+consistent with the MVVBP and still usable as copy guardrails: plain-English
+reporting, no black box, no hiding misses or overpromising, testing
+purposefully and scaling what works.
 
 ---
 
 ## 2. Audience
 
+Per the MVVBP, the target is **established businesses at pivotal moments**.
 Two personas drive site copy and IA. Both need the same thing stated
 differently: **proof, plain language, and a partner they can trust.**
 
-### Persona 01 — Jordan, owner-operator
+### Persona 01: Jordan, owner-operator
 
 38, entrepreneur in Boise, $100K+ annual revenue. Built the business on
 determination; overwhelmed by websites, ads, and social. Busy schedule leaves no
@@ -71,7 +122,7 @@ room to do marketing herself.
 - **Cares about:** trust and transparency, clear jargon-free communication,
   tangible revenue results, reliability and follow-through.
 
-### Persona 02 — David, enterprise marketing lead
+### Persona 02: David, enterprise marketing lead
 
 52, VP of Marketing at a national construction materials company doing hundreds
 of millions annually. Large team, multimillion-dollar budgets, recurring
@@ -88,14 +139,26 @@ bandwidth gaps.
 
 ## 3. Voice
 
-Clear, direct, and jargon-free, making complex marketing feel simple and
-actionable. **A trusted friend who happens to know their stuff about
-marketing.** It balances professional confidence with approachable candor —
-always transparent, focused on results, and unafraid to say the hard thing when
-it helps clients move forward.
+**A trusted growth partner:** clear, confident, and moving forward (the
+MVVBP's "clarity, confidence, and forward motion"). We sound like someone
+who's in it with you for the long run: warm and human, honest when it's hard
+(*Integrity Always*), and plain-spoken, so marketing feels simple and
+actionable. Confident without hype; ambitious without overpromising.
 
-**Visual vibe keywords:** confident, clean, purposeful, transparent, modern,
-energetic, trustworthy, straightforward, strategic, human.
+**Tone by moment:**
+
+- **Positioning and headlines:** assured and direct. Short sentences. The
+  "Not a vendor. Not a volume agency." rhythm is the model.
+- **Explaining the work:** plain English, specific, generous. Show the plan
+  and the numbers.
+- **Talking about people and clients:** warm and relational. "With you",
+  "together", "for the long run".
+- **Asking for the conversation:** low-pressure and selective. A conversation
+  about fit, not a pitch.
+
+**Visual vibe keywords** (style guide, still current): confident, clean,
+purposeful, transparent, modern, energetic, trustworthy, straightforward,
+strategic, human.
 
 ---
 
@@ -113,7 +176,7 @@ accent (10%).
 | ---------------------- | --------- | --------------- | ---------------------------------------- |
 | Volt Green             | `#d2eb37` | `volt`          | The signature color.                     |
 | Lapis Blue             | `#0700ff` | `lapis`         | Grounds the brand; good for large fills. |
-| Extra Light Yellow     | `#f4f4f2` | `paper`         | Default page canvas — warmer than white. |
+| Extra Light Yellow     | `#f4f4f2` | `paper`         | Default page canvas, warmer than white. |
 
 ### Secondary
 
@@ -123,7 +186,7 @@ accent (10%).
 | White    | `#ffffff` | `white`    |                                            |
 | Black    | `#161c16` | `ink`      | Near-black with a green cast. Default text.|
 
-### Accent — special circumstances only
+### Accent: special circumstances only
 
 | Name    | Hex       | Token     |
 | ------- | --------- | --------- |
@@ -158,13 +221,13 @@ Both families are free to use. Loaded via `next/font/google` in
 | Headings & subheadings          | Poppins SemiBold              | 600          |
 | Heading accent, subheader, eyebrow | IBM Plex Serif Regular Italic | 400 italic   |
 | Small section headers & eyebrows | IBM Plex Serif Bold           | 700, uppercase |
-| Body copy & subheaders          | Poppins ExtraLight            | 200          |
+| Body copy & subheaders          | Poppins Light (guide: ExtraLight 200) | 300 on screen |
 | Body (alternative)              | Poppins Regular               | 400          |
 
 ### The signature heading treatment
 
 The brand's recognizable move is a heading in Poppins SemiBold with **one word
-set in IBM Plex Serif italic** — "Title _example_", "Reach _your people_",
+set in IBM Plex Serif italic**: "Title _example_", "Reach _your people_",
 "Brand _style guide_".
 
 `globals.css` wires this to `<em>` inside any heading:
@@ -173,7 +236,7 @@ set in IBM Plex Serif italic** — "Title _example_", "Reach _your people_",
 <h1>Marketing <em>made clear</em>.</h1>
 ```
 
-Poppins Regular is acceptable for body when it helps legibility — for example
+Poppins Regular is acceptable for body when it helps legibility, for example
 white text on Lapis.
 
 ---
@@ -182,7 +245,7 @@ white text on Lapis.
 
 The leaf symbolizes growth, adaptability, and forward momentum; as an arrow it
 represents purposeful direction. The sub-name "marketing + media" signals both
-strategic expertise and creative execution — a full-spectrum partner.
+strategic expertise and creative execution, a full-spectrum partner.
 
 | Variant       | Contents                                | Use                                                                      |
 | ------------- | --------------------------------------- | ------------------------------------------------------------------------ |
@@ -193,14 +256,14 @@ strategic expertise and creative execution — a full-spectrum partner.
 ### Color rules for the logo
 
 - On **Volt Green**: use white. Use black only when the logo sits close to black
-  text, or at very small physical sizes — as a rough guide, when the "arrowleaf"
+  text, or at very small physical sizes, as a rough guide, when the "arrowleaf"
   wordmark (Poppins SemiBold) is 12pt or smaller.
 - On **Lapis** and **Neon Red**: use white.
 - On light/gradient backgrounds: black.
 
 ### In code
 
-Use the inlined SVG components — they inherit `currentColor`, so color is
+Use the inlined SVG components: they inherit `currentColor`, so color is
 controlled by a text utility:
 
 ```tsx
@@ -215,7 +278,7 @@ import { LogoIcon, LogoLockup } from "@/components/logo";
 ## 7. Brand graphics & patterns
 
 **Anti-design = industry disruptor / breaking out of the box.** Gradients and
-abstract elements give the brand subtle touches of anti-design — just enough
+abstract elements give the brand subtle touches of anti-design, just enough
 edge to keep it modern and unexpected, signaling clarity, transparency, and a
 willingness to break from "business as usual" while staying professional and
 trustworthy.
@@ -224,21 +287,21 @@ Other elements that fit: 3D renders, emojis, illustrations, and bold shapes.
 
 The soft mesh gradient is the primary texture. Three ways to use it:
 
-- **Animated glow** — `<GlowField />` from `@/components/glow-field`. Five
+- **Animated glow**: `<GlowField />` from `@/components/glow-field`. Five
   soft blobs (orange, pink, magenta, cyan, a hint of lapis) that wander
-  continuously — each sways on mismatched horizontal/vertical periods, so the
+  continuously: each sways on mismatched horizontal/vertical periods, so the
   paths curve and never stop. Used as the home hero background. Tune speed and
   range with the `motion` numbers per blob in that file. Compositor-only
   animation (cheap to run); freezes under `prefers-reduced-motion`. Avoid
-  putting `backdrop-blur` elements over it — they re-blur every frame.
+  putting `backdrop-blur` elements over it: they re-blur every frame.
 - **Static CSS** (no image request, scales to any section):
   `bg-mesh-warm`, `bg-mesh-cool`
 - **Raster**, for large hero areas: `/brand/gradient/mesh-01…05.webp`
 
 Supporting utilities:
 
-- `bg-pixel-grid` — the faint pixel/grid pattern from the guide
-- `mark-volt` — the Volt Green highlighter treatment behind inline text, as in
+- `bg-pixel-grid`: the faint pixel/grid pattern from the guide
+- `mark-volt`: the Volt Green highlighter treatment behind inline text, as in
   "Crafting custom solutions in `branding`"
 
 ---
@@ -278,7 +341,7 @@ against the style guide renderings. The app icons in `src/app/`
 
 These need to come from the client or the brand designer before launch:
 
-1. **Primary logo lockup** (icon + "arrowleaf" + "marketing + media") — the
+1. **Primary logo lockup** (icon + "arrowleaf" + "marketing + media"), the
    style guide specifies this for the website header, but the media export did
    not contain it. Only the secondary lockup and the icon were present. Ideally
    request the original **vector** (`.svg`/`.ai`/`.eps`) for all three variants
@@ -295,7 +358,7 @@ These need to come from the client or the brand designer before launch:
    stream adaptively and stay out of the repo, then point the `<source>` URLs
    in `showcase-scroll.tsx` at them. The original `.mov` masters (~430 MB)
    were never committed.
-4. **Client logos** for any "trusted by" strip — the export's logos are theme
+4. **Client logos** for any "trusted by" strip, the export's logos are theme
    placeholders, except `alexais` (a real client, in `Alexaisjpg-*`).
 
 ---
@@ -305,4 +368,4 @@ These need to come from the client or the brand designer before launch:
 Original style guide: `[Arrowleaf] - Style Guide.pdf` (22 pages).
 Original media export:
 `media_library_export-arrowleaf_marketing-2026_09_25_20_09_45` (139 files,
-421 MB — roughly 37 exact-duplicate pairs, and mostly theme placeholders).
+421 MB: roughly 37 exact-duplicate pairs, and mostly theme placeholders).

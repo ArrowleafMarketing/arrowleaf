@@ -1,4 +1,4 @@
-# Arrowleaf Marketing + Media — website
+# Arrowleaf Marketing + Media: website
 
 Marketing site for [Arrowleaf Marketing + Media](https://arrowleafmarketing.com),
 a boutique marketing and media team in Boise, Idaho.
@@ -17,9 +17,9 @@ Then open http://localhost:3000.
 | Route    | Purpose                                                        |
 | -------- | -------------------------------------------------------------- |
 | `/`          | Home: hero with the scroll-to-fullscreen reel, then Solutions.  |
-| `/about`     | Mock page — mission, beliefs, values from the style guide.      |
-| `/solutions` | Mock page — the four departments.                               |
-| `/results`   | Mock page — clients from the 2025 recap; case studies to come.  |
+| `/about`     | Mock page: mission, beliefs, values from the style guide.      |
+| `/solutions` | Mock page: the four departments.                               |
+| `/results`   | Mock page: clients from the 2025 recap; case studies to come.  |
 | `/brand`     | Internal brand reference. Live rendering of every design token. |
 
 `/brand` is `noindex`. Use it to eyeball changes to the palette, type scale,
@@ -36,15 +36,15 @@ npm run lint    # eslint
 
 ## Brand
 
-**`docs/BRAND.md` is the reference** — palette with usage rules, typography
+**`docs/BRAND.md` is the reference**, palette with usage rules, typography
 roles, logo variants, voice, personas, and the asset inventory. It is digested
 from the September 2025 style guide.
 
 Brand values live in three places that must stay in sync:
 
-1. `src/lib/brand.ts` — TypeScript constants (metadata, alt text, palette)
-2. `src/app/globals.css` — Tailwind v4 `@theme` tokens and brand utilities
-3. `/brand` — the live reference page
+1. `src/lib/brand.ts`, TypeScript constants (metadata, alt text, palette)
+2. `src/app/globals.css`, Tailwind v4 `@theme` tokens and brand utilities
+3. `/brand`, the live reference page
 
 ### Tokens at a glance
 
@@ -79,11 +79,11 @@ docs/BRAND.md             the brand reference
 ## Before launch
 
 `docs/BRAND.md` has a short **Asset gaps** list of things that must come from
-the client — most importantly the **primary logo lockup** (not present in the
+the client: most importantly the **primary logo lockup** (not present in the
 media export) and **real photography** (the export's imagery is almost entirely
 stock/theme placeholder).
 
 ## Contributing
 
-`AGENTS.md` carries the working rules — Next.js 16 deprecations to avoid and the
+`AGENTS.md` carries the working rules, Next.js 16 deprecations to avoid and the
 brand non-negotiables. Read it and `docs/BRAND.md` before writing UI.

@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
  * a new window sliding over the old one, which recedes beneath it. The CSS
  * lives in globals.css under "Page transitions".
  *
- * Wrap each page's `<main>` in this — never the layout. Layouts persist
+ * Wrap each page's `<main>` in this: never the layout. Layouts persist
  * across navigations, so a boundary there would never enter or exit. The
  * header lives in the layout and is pinned out of the animation separately.
  *
