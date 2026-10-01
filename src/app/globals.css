@@ -172,6 +172,13 @@
 }
 
 /*
+  `cta-open:` mirrors a card's hover state on touch screens: CardPeek sets
+  data-open="true" on a case card while it's in the middle of the screen, and
+  anything inside it styled with cta-open: changes as if hovered.
+*/
+@custom-variant cta-open (&:where([data-open="true"] *));
+
+/*
   The display size, additionally capped by screen height, so a pinned
   one-screen hero still fits on short laptop screens (e.g. 1280×720).
 */
@@ -250,15 +257,12 @@
 /*
   The services "deck": cards that scroll over one another.
 
-  Applied as `sm:stack-card`, so the overlap only kicks in at `sm` and above.
   Sticky stacking reads correctly only when a card is shorter than the space
-  below the header: otherwise it scrolls past before it can pin and its content
-  gets clipped. Phone viewports can't guarantee that (five offerings plus large
-  dynamic type will exceed a small screen), so on phones the cards fall back to
-  a normal flow list. They still read as a colored sequence; they just don't
-  overlap.
+  below the tabs above it: otherwise it scrolls past before it can pin and its
+  content gets clipped. On phones the cards are compact (offerings as chips,
+  a slimmer tab) so they fit.
 
-  Each card sets `--stack-top` inline to offset it below the one before it.
+  Each card sets `--stack-top` to offset it below the one before it.
 */
 @utility stack-card {
   position: sticky;
@@ -268,17 +272,14 @@
 /*
   Whatever follows the services stack slides up over the pinned cards like
   one more card: pulled up over the stack's last screen of room, layered
-  above the cards, with the cards' rounded top and shadow. Only where the
-  cards stack (sm and up).
+  above the cards, with the cards' rounded top and shadow.
 */
-@media (min-width: 40rem) {
-  [data-stack-section] + * {
-    position: relative;
-    z-index: 10;
-    margin-top: -100svh;
-    border-radius: var(--radius-brand-lg) var(--radius-brand-lg) 0 0;
-    box-shadow: 0 -8px 40px -12px color-mix(in oklab, var(--color-ink) 18%, transparent);
-  }
+[data-stack-section] + * {
+  position: relative;
+  z-index: 10;
+  margin-top: -100svh;
+  border-radius: var(--radius-brand-lg) var(--radius-brand-lg) 0 0;
+  box-shadow: 0 -8px 40px -12px color-mix(in oklab, var(--color-ink) 18%, transparent);
 }
 
 @layer base {

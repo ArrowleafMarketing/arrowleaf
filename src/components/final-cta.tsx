@@ -29,7 +29,7 @@ export function FinalCta() {
           <CtaPill href="/contact">Start a conversation</CtaPill>
           <Link
             href="/results"
-            className="text-sm font-medium underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink"
+            className="-my-2 py-2 text-sm font-medium underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink"
           >
             Or see the results first
           </Link>

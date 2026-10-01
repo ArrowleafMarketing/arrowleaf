@@ -72,14 +72,14 @@ function CaseSection({ study }: { study: CaseStudy }) {
 
           <dl
             data-reveal
-            className={`mt-10 grid gap-x-8 gap-y-8 border-t border-ink/15 pt-8 ${
-              story.results.length > 1 ? "sm:grid-cols-2" : ""
+            className={`mt-10 grid gap-x-6 gap-y-8 border-t border-ink/15 pt-8 sm:gap-x-8 ${
+              story.results.length > 1 ? "grid-cols-2" : ""
             }`}
           >
             {story.results.map((r) => (
               <div key={r.label}>
                 <dt className="sr-only">{r.label}</dt>
-                <dd className="text-5xl font-semibold leading-none tracking-[-0.03em]">{r.value}</dd>
+                <dd className="text-4xl font-semibold leading-none tracking-[-0.03em] sm:text-5xl">{r.value}</dd>
                 <dd className="mt-2 max-w-xs text-sm text-ink/70">{r.label}</dd>
               </div>
             ))}

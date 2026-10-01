@@ -56,7 +56,10 @@ export default function ContactPage() {
           </div>
           </div>
 
-          <ContactForm />
+          {/* Form first on phones, so it's right under the intro. */}
+          <div className="max-lg:order-first">
+            <ContactForm />
+          </div>
 
         </section>
       </main>

@@ -14,11 +14,11 @@ import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
  * a tab above the next.
  *
  * The stacking itself is plain CSS `position: sticky` (the `stack-card`
- * utility in globals.css, applied as `sm:stack-card`): nothing hijacks the
- * scrollbar and it works from the keyboard. Each card sticks one tab height
- * lower than the one before, so exactly its tab strip is left showing. On
- * phones the overlap is off (a tall card would be clipped before it could
- * pin) and the cards fall back to a normal list.
+ * utility in globals.css): nothing hijacks the scrollbar and it works from
+ * the keyboard. Each card sticks one tab height lower than the one before, so
+ * exactly its tab strip is left showing. Phones get the same deck with a
+ * slimmer tab and compact cards (offerings as chips), so even the last card
+ * fits on screen below the three tabs above it.
  *
  * The title move is scroll-linked, read from the card positions: it starts the
  * moment the next card's top edge reaches this card's bottom, and finishes by
@@ -38,13 +38,16 @@ import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
  * an arrow.
  */
 
-/** Distance from the viewport top for the first card, clearing the header. */
-const STACK_TOP_REM = 6;
 /**
- * Height of a card's tab strip, and so how far each card sticks below the one
- * before: the card's top padding, its index row, and the same again below.
+ * Stack geometry, set on the list as CSS variables so it can change by
+ * breakpoint: `--stack-base` is the first card's distance from the top of the
+ * screen (clearing the header), `--tab` the height of a card's tab strip (its
+ * top padding, index row, and the same again below), and so how far each card
+ * sticks below the one before. Phones: 5rem and 3.5rem (4.5rem and 3rem on
+ * short phones like an iPhone SE); sm and up: 6rem and 4.25rem.
  */
-const TAB_REM = 4.25;
+const STACK_VARS =
+  "[--stack-base:5rem] [--tab:3.5rem] max-sm:[@media(max-height:44rem)]:[--stack-base:4.5rem] max-sm:[@media(max-height:44rem)]:[--tab:3rem] sm:[--stack-base:6rem] sm:[--tab:4.25rem]";
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const smooth = (a: number, b: number, n: number) => {
@@ -172,7 +175,7 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
             <Link
               href="/solutions"
               data-reveal
-              className="group inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-lapis"
+              className="group -my-2 inline-flex items-center gap-2 py-2 text-sm font-medium text-ink transition-colors hover:text-lapis"
             >
               All solutions
               <ArrowIcon className="transition-transform duration-300 ease-brand group-hover:translate-x-0.5" />
@@ -180,16 +183,18 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
           </header>
         )}
 
-        <ol ref={listRef} className={showHeader ? "mt-8 sm:mt-10" : ""}>
+        <ol ref={listRef} className={`${STACK_VARS} ${showHeader ? "mt-8 sm:mt-10" : ""}`}>
           {services.map((service, i) => (
             <li
               key={service.id}
               id={service.id}
               data-stack-card
-              className={`scroll-mt-24 sm:stack-card ${i < services.length - 1 ? "pb-6" : ""}`}
+              className={`scroll-mt-24 stack-card [--stack-top:calc(var(--stack-base)+var(--i)*var(--tab))] ${
+                i < services.length - 1 ? "pb-6" : ""
+              }`}
               style={
                 {
-                  "--stack-top": `${STACK_TOP_REM + i * TAB_REM}rem`,
+                  "--i": i,
                   zIndex: i + 1,
                 } as React.CSSProperties
               }
@@ -197,7 +202,7 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
               <article
                 data-reveal
                 data-cta-host
-                className={`group/cta ${service.theme.surface} ${service.theme.text} relative flex min-h-[clamp(24rem,58vh,34rem)] flex-col justify-between rounded-brand-lg border ${service.theme.rule} p-8 shadow-[0_-8px_40px_-12px_rgb(22_28_22_/_0.18)] sm:px-12 sm:pb-12 sm:pt-6`}
+                className={`group/cta ${service.theme.surface} ${service.theme.text} relative flex min-h-[clamp(24rem,58vh,34rem)] flex-col justify-between rounded-brand-lg border ${service.theme.rule} px-6 pb-8 pt-4 shadow-[0_-8px_40px_-12px_rgb(22_28_22_/_0.18)] sm:px-12 sm:pb-12 sm:pt-6`}
               >
                 {/* The tab strip: index, a rule that shortens to make room for
                     the tab label (shown once the card is covered), and the
@@ -206,7 +211,7 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
                 <span
                   aria-hidden
                   data-tab
-                  className="absolute left-24 top-6 hidden origin-top-left whitespace-nowrap sm:block text-xl font-semibold leading-none tracking-[-0.02em] opacity-0 will-change-transform"
+                  className="absolute left-[4.5rem] top-4 origin-top-left whitespace-nowrap text-base font-semibold sm:left-24 sm:top-6 sm:text-xl leading-none tracking-[-0.02em] opacity-0 will-change-transform"
                 >
                   {service.title}
                 </span>
@@ -228,23 +233,25 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
                   </Link>
                 </div>
 
-                <div className="mt-10 grid gap-10 sm:mt-[4.5rem] md:grid-cols-[1.1fr_1fr] md:gap-16">
+                <div className="mt-7 grid gap-6 sm:mt-[4.5rem] sm:gap-10 md:grid-cols-[1.1fr_1fr] md:gap-16">
                   <div>
-                    <h3 data-title className="origin-top-left text-4xl will-change-transform sm:text-5xl">
+                    <h3 data-title className="origin-top-left text-[2rem] leading-[1.1] will-change-transform sm:text-5xl">
                       {service.title}
                     </h3>
                     <p
-                      className={`mt-5 max-w-md text-lg leading-relaxed ${service.theme.muted}`}
+                      className={`mt-4 max-w-md text-base leading-relaxed sm:mt-5 sm:text-lg ${service.theme.muted}`}
                     >
                       {service.summary}
                     </p>
                   </div>
 
-                  <ul className="flex flex-col justify-end gap-0">
+                  {/* Chips on phones (keeps the card short enough to stack),
+                      a ruled list from md. */}
+                  <ul className="flex flex-wrap gap-2 md:flex-col md:flex-nowrap md:justify-end md:gap-0">
                     {service.offerings.map((offering) => (
                       <li
                         key={offering}
-                        className={`border-t ${service.theme.rule} py-3.5 text-base font-medium sm:text-lg`}
+                        className={`rounded-full border ${service.theme.rule} px-3 py-1.5 text-sm font-medium md:rounded-none md:border-x-0 md:border-b-0 md:px-0 md:py-3.5 md:text-base lg:text-lg`}
                       >
                         {offering}
                       </li>
@@ -259,7 +266,7 @@ export function ServicesStack({ showHeader = true }: { showHeader?: boolean }) {
               is pulled up over this room: `data-stack-section` in
               globals.css). Sticky cards can't travel past the end of their
               list, so this has to be a list item, not padding. */}
-          <li aria-hidden className="hidden h-svh sm:block" />
+          <li aria-hidden className="h-svh" />
         </ol>
       </div>
     </section>

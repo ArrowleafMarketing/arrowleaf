@@ -173,7 +173,20 @@ export function ShowcaseScroll({
         h = lerp(tile.h, H, e);
       }
 
-      const radius = lerp(START_RADIUS, 0, e);
+      // Phones (and short screens) don't pin, so there the reel breaks out
+      // instead: as the tile rises from low on the screen to just past the
+      // middle, it widens edge to edge and its corners square off, the same
+      // "the work takes over" moment as the desktop grow, without pinning.
+      let breakout = 0;
+      if (!pinned && !reduced) {
+        const vh = window.innerHeight;
+        const mid = sl.top + sl.height / 2;
+        breakout = easeInOutCubic(clamp01((vh * 0.85 - mid) / (vh * 0.4)));
+        x = lerp(tile.x, 0, breakout);
+        w = lerp(tile.w, W, breakout);
+      }
+
+      const radius = lerp(START_RADIUS, 0, Math.max(e, breakout));
       layer.style.clipPath = `inset(${px(y)} ${px(W - x - w)} ${px(H - y - h)} ${px(x)} round ${px(radius)})`;
       // Keep the reel cover-fit and centred inside the window.
       const k = Math.max(w / W, h / H);
@@ -190,7 +203,7 @@ export function ShowcaseScroll({
       tiers.style.width = px(w);
       tiers.style.height = px(h);
       tiers.style.setProperty("--r", px(radius));
-      tiers.style.opacity = (1 - clamp01((e - 0.9) / 0.1)).toFixed(3);
+      tiers.style.opacity = Math.min(1 - clamp01((e - 0.9) / 0.1), 1 - breakout).toFixed(3);
       tiers.style.visibility = "visible";
       content.style.transform = `translate3d(0, ${px(shift)}, 0)`;
       copy.style.opacity = String(1 - clamp01(e / 0.55));

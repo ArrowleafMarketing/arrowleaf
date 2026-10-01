@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
+import { useActionState, useEffect } from "react";
 import { sendContact, type ContactState } from "@/app/contact/actions";
 
 const initial: ContactState = { status: "idle", attempt: 0 };
@@ -11,6 +12,14 @@ const input =
 /** The contact form. Sends through the `sendContact` server action. */
 export function ContactForm() {
   const [state, action, pending] = useActionState(sendContact, initial);
+
+  // Tell Tag Manager about each real submission, so a GA4 "generate_lead"
+  // (or an ads conversion) can be triggered off it. Safe without GTM: the
+  // event just waits in the dataLayer.
+  useEffect(() => {
+    // A real send carries the sender's name back; a caught bot doesn't.
+    if (state.status === "sent" && state.values?.name) sendGTMEvent({ event: "generate_lead", form: "contact" });
+  }, [state.status, state.attempt, state.values?.name]);
 
   if (state.status === "sent") {
     return (

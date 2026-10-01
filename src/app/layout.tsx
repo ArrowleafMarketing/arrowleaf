@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Poppins, IBM_Plex_Serif } from "next/font/google";
 import { RevealController } from "@/components/reveal-controller";
 import { SiteHeader } from "@/components/site-header";
@@ -61,6 +62,20 @@ export const viewport: Viewport = {
   under reduced motion. If the controller never starts (a script error), the
   mark comes off after 4s and everything shows.
 */
+/*
+  Google Tag Manager, via Next's own integration (@next/third-parties): the
+  container script loads after hydration so it never blocks the first paint.
+  Only rendered when NEXT_PUBLIC_GTM_ID is set, so set it for Production in
+  Vercel and leave it unset locally and on previews to keep test traffic out
+  of the analytics. The ID isn't a secret (it's in every page's source); the
+  variable is just the on/off switch per environment.
+
+  GA4 (configured inside GTM) records page views on client-side navigation
+  through its "page changes based on browser history events" setting, which
+  is on by default, so no extra routing hook is needed here.
+*/
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
 const revealScript = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var d=document.documentElement;d.setAttribute("data-reveals","");setTimeout(function(){if(!d.hasAttribute("data-reveal-live"))d.removeAttribute("data-reveals")},4000)}}catch(e){}`;
 
 export default function RootLayout({
@@ -78,6 +93,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: revealScript }} />
       </head>
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body className="min-h-full flex flex-col">
         <RevealController />
         <SiteHeader />

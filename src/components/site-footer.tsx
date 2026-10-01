@@ -40,7 +40,7 @@ export function SiteFooter() {
           <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
             Solutions
           </p>
-          <ul className="mt-5 grid gap-3">
+          <ul className="mt-4 grid">
             {services.map((s) => (
               <li key={s.id}>
                 <FooterLink href={`/solutions/${s.id}`}>{s.title}</FooterLink>
@@ -54,7 +54,7 @@ export function SiteFooter() {
             <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
               Company
             </p>
-            <ul className="mt-5 grid gap-3">
+            <ul className="mt-4 grid">
               {company.map((l) => (
                 <li key={l.href}>
                   <FooterLink href={l.href}>{l.label}</FooterLink>
@@ -66,18 +66,18 @@ export function SiteFooter() {
             <p className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-white/60">
               Get in touch
             </p>
-            <ul className="mt-5 grid gap-3 text-base">
+            <ul className="mt-4 grid text-base">
               <li>
-                <a href={`mailto:${brand.email}`} className="text-white/80 transition-colors hover:text-white">
+                <a href={`mailto:${brand.email}`} className="inline-block py-1.5 text-white/80 transition-colors hover:text-white">
                   {brand.email}
                 </a>
               </li>
               <li>
-                <a href={brand.phoneHref} className="text-white/80 transition-colors hover:text-white">
+                <a href={brand.phoneHref} className="inline-block py-1.5 text-white/80 transition-colors hover:text-white">
                   {brand.phone}
                 </a>
               </li>
-              <li className="text-white/80">{brand.locality}</li>
+              <li className="py-1.5 text-white/80">{brand.locality}</li>
             </ul>
           </div>
         </div>
@@ -87,7 +87,7 @@ export function SiteFooter() {
         <p>
           © {new Date().getFullYear()} {brand.name}
         </p>
-        <a href="#top" className="inline-flex items-center gap-2 transition-colors hover:text-white">
+        <a href="#top" className="-my-2 inline-flex items-center gap-2 py-2 transition-colors hover:text-white">
           Back to top
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3.5">
             <path d="M8 13V3M4 7l4-4 4 4" />
@@ -106,7 +106,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-2 text-base text-white/80 transition-colors hover:text-white"
+      className="group inline-flex items-center gap-2 py-1.5 text-base text-white/80 transition-colors hover:text-white"
     >
       {children}
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3 -translate-x-1 opacity-0 transition-[opacity,translate] duration-300 ease-brand group-hover:translate-x-0 group-hover:opacity-100">

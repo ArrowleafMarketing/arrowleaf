@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/arrow-icon";
+import { CardPeek } from "@/components/card-peek";
 import { InViewVideo } from "@/components/in-view-video";
 import { LeafCta } from "@/components/leaf-cta";
 import { cases, type CaseStudy } from "@/lib/cases";
@@ -14,6 +15,9 @@ import { cases, type CaseStudy } from "@/lib/cases";
  * evidence. Hover a card and the window opens across the whole card (the
  * hero reel's growing-window move), so the work that produced the number
  * takes over while the number stays on top.
+ *
+ * On touch screens the window opens as each card passes through the middle
+ * of the screen instead (CardPeek, the `cta-open:` variant).
  *
  * The trend line draws itself when the card arrives (`data-draw`, part of the
  * reveal system in globals.css).
@@ -42,7 +46,7 @@ export function WorkPreview() {
             </p>
             <Link
               href="/results"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-lapis"
+              className="group -my-2 inline-flex items-center gap-2 py-2 text-sm font-medium text-ink transition-colors hover:text-lapis"
             >
               All results
               <ArrowIcon className="transition-transform duration-300 ease-brand group-hover:translate-x-0.5" />
@@ -50,6 +54,7 @@ export function WorkPreview() {
           </div>
         </header>
 
+        <CardPeek selector="#work [data-cta-host]" />
         <div className="mt-14 grid gap-5 sm:mt-16 lg:grid-cols-12 lg:grid-rows-2">
           <CaseCard study={feature} feature className="lg:col-span-7 lg:row-span-2" />
           {rest.map((study) => (
@@ -80,10 +85,11 @@ export function CaseCard({
         feature ? "lg:min-h-[38rem]" : ""
       } ${className}`}
     >
+      <span data-peek aria-hidden className="pointer-events-none absolute inset-x-0 top-1/2 h-px" />
       {/* The work window. Rests along the bottom on phones and in the right
           corner from lg, and opens to fill the card on hover or focus. */}
       <div
-        className={`absolute inset-0 -z-10 transition-[clip-path] duration-700 ease-brand group-hover/cta:[clip-path:inset(0_round_0)] group-focus-visible/cta:[clip-path:inset(0_round_0)] ${
+        className={`absolute inset-0 -z-10 transition-[clip-path] duration-700 ease-brand group-hover/cta:[clip-path:inset(0_round_0)] cta-open:[clip-path:inset(0_round_0)] group-focus-visible/cta:[clip-path:inset(0_round_0)] ${
           feature
             ? "lg:[clip-path:inset(46%_4%_4%_52%_round_18px)] xl:[clip-path:inset(46%_4%_4%_44%_round_18px)]"
             : "lg:[clip-path:inset(24%_4%_4%_60%_round_14px)]"
@@ -91,7 +97,7 @@ export function CaseCard({
       >
         <CaseMediaLayer media={study.media} framed={!feature} />
         {/* Darkens the footage under the white text once the window opens. */}
-        <div className="absolute inset-0 bg-ink/0 transition-colors duration-700 ease-brand group-hover/cta:bg-ink/60 group-focus-visible/cta:bg-ink/60" />
+        <div className="absolute inset-0 bg-ink/0 transition-colors duration-700 ease-brand group-hover/cta:bg-ink/60 cta-open:bg-ink/60 group-focus-visible/cta:bg-ink/60" />
         {/* Keeps the caption legible over bright footage while it's small. */}
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink/55 to-transparent" />
         <p
@@ -106,14 +112,14 @@ export function CaseCard({
 
       {/* The scorecard. Turns white as the work opens behind it. */}
       <div
-        className={`flex w-full flex-col transition-colors duration-500 group-hover/cta:text-white group-focus-visible/cta:text-white ${
+        className={`flex w-full flex-col transition-colors duration-500 group-hover/cta:text-white cta-open:text-white group-focus-visible/cta:text-white ${
           feature ? "p-7 pb-[17rem] sm:p-10 sm:pb-[17rem] lg:pb-10" : "p-7 pb-[17rem] lg:pb-7"
         }`}
       >
         <div className="flex items-start justify-between gap-4">
           <p className="text-sm">
             <span className="font-semibold">{study.client}</span>
-            <span className="text-ink/65 transition-colors duration-500 group-hover/cta:text-white/80">
+            <span className="text-ink/65 transition-colors duration-500 group-hover/cta:text-white/80 cta-open:text-white/80">
               {" "}
               · {study.industry}
             </span>
@@ -136,18 +142,18 @@ export function CaseCard({
 
         <div className={`flex flex-col items-start gap-2 ${feature ? "mt-8" : "mt-4"}`}>
           {study.trend && <Trend values={study.trend} />}
-          <p className="max-w-[16rem] text-sm leading-relaxed text-ink/70 transition-colors duration-500 group-hover/cta:text-white/80">
+          <p className="max-w-[16rem] text-sm leading-relaxed text-ink/70 transition-colors duration-500 group-hover/cta:text-white/80 cta-open:text-white/80">
             {study.detail}
           </p>
         </div>
 
         {study.more && (
-          <dl className="mt-10 grid max-w-[15rem] grid-cols-2 gap-6 border-t border-ink/12 pt-6 transition-colors duration-500 group-hover/cta:border-white/25">
+          <dl className="mt-10 grid max-w-[15rem] grid-cols-2 gap-6 border-t border-ink/12 pt-6 transition-colors duration-500 group-hover/cta:border-white/25 cta-open:border-white/25">
             {study.more.map((m) => (
               <div key={m.label}>
                 <dt className="sr-only">{m.label}</dt>
                 <dd className="text-3xl font-semibold tracking-tight">{m.value}</dd>
-                <dd className="mt-1 text-xs text-ink/70 transition-colors duration-500 group-hover/cta:text-white/85">
+                <dd className="mt-1 text-xs text-ink/70 transition-colors duration-500 group-hover/cta:text-white/85 cta-open:text-white/85">
                   {m.label}
                 </dd>
               </div>
@@ -157,7 +163,7 @@ export function CaseCard({
 
         <div className="pt-8 lg:mt-auto">
           {feature && (
-            <p className="mb-3 text-xs text-ink/60 lg:max-w-[45%] xl:max-w-[40%] transition-colors duration-500 group-hover/cta:text-white/80">
+            <p className="mb-3 text-xs text-ink/60 lg:max-w-[45%] xl:max-w-[40%] transition-colors duration-500 group-hover/cta:text-white/80 cta-open:text-white/80">
               Source: {study.source}
             </p>
           )}
@@ -165,7 +171,7 @@ export function CaseCard({
             {study.services.map((s) => (
               <li
                 key={s}
-                className="rounded-full border border-ink/15 px-2.5 py-1 text-[0.7rem] font-medium transition-colors duration-500 group-hover/cta:border-white/40"
+                className="rounded-full border border-ink/15 px-2.5 py-1 text-[0.7rem] font-medium transition-colors duration-500 group-hover/cta:border-white/40 cta-open:border-white/40"
               >
                 {s}
               </li>
@@ -201,7 +207,7 @@ function Trend({ values }: { values: readonly number[] }) {
         strokeWidth="2.25"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-lapis group-hover/cta:text-volt"
+        className="text-lapis group-hover/cta:text-volt cta-open:text-volt"
       />
       <circle cx={ex} cy={ey} r="3.5" className="fill-neon-red" />
     </svg>

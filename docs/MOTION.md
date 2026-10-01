@@ -85,15 +85,19 @@ Reuse these before building something new.
 | Page drop | `page-transition.tsx`, globals "Page transitions" | Every page's `<main>` is wrapped in `PageTransition` |
 | Floating glass header | `floating-header.tsx` | Detaches after 16px of scroll |
 | Glow field | `glow-field.tsx` | Home only; interior pages use the static mesh |
-| Scroll-grown reel | `showcase-scroll.tsx` | Scroll-linked, never time-based |
+| Scroll-grown reel | `showcase-scroll.tsx` | Scroll-linked, never time-based. On phones (no pinning) it breaks out to full width as it rises past the middle of the screen |
 | "Touch me" hop | `pillar-cards.tsx` | Double bounce (4px, then 2px), one card at a time, stops once used |
 | Flip card | `pillar-cards.tsx` | 700ms `ease-spring`; hover on mouse, tap on touch |
-| Folder-tab stack | `services-stack.tsx` | Scroll-linked title collapse |
+| Folder-tab stack | `services-stack.tsx` | Scroll-linked title collapse. Same on phones, with compact cards and a slimmer tab |
 | Leaf → arrow CTA | `leaf-cta.tsx`, `cta-pill.tsx` | 420ms diagonal wipe, then the same double bounce pointed up-right. Every primary "go" button uses it. Crossing 60% down the screen, it peeks (arrow, then back to the logo) with a mouse, and turns to the arrow and stays on touch; scrolling back past the line reverses it |
-| Work window | `work-preview.tsx` | The creative rests in a corner window and opens across the card on hover, 700ms `ease-brand` |
+| Work window | `work-preview.tsx` | The creative rests in a corner window and opens across the card on hover, 700ms `ease-brand`. On touch screens it opens while the card's middle is in the middle of the screen (`card-peek.tsx`, `cta-open:` variant) |
 | Ticker | `client-logos.tsx` | Three rows of client logos on `marquee` keyframes, 100s linear (about 30px a second), middle row reversed, edges faded, never pauses; still under reduced motion |
 | Footer rise | `site-footer.tsx` | Scroll-driven (`animation-timeline: view()`); static where unsupported |
 | Arrow nudge | `ArrowIcon` in buttons and links | Small translate or rotate on hover, `ease-brand` |
+
+Phones get the same moments, not a reduced site: every hover effect has a
+scroll-triggered twin on touch screens, and every pinned effect a version
+that works without pinning.
 
 Shared motifs: **the double bounce** (a gentle lift, then half again) means
 "this is interactive". **Up-and-right** means "go somewhere". Keep both
