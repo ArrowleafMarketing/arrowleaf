@@ -105,12 +105,12 @@ export default function BackNinePartnerPage() {
             </p>
             <div data-reveal className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
               <CtaPill href="#sign-up">Sign up now</CtaPill>
-              <Link
+              <a
                 href="#plans"
                 className="-my-2 py-2 text-sm font-medium underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink"
               >
                 Compare plans
-              </Link>
+              </a>
             </div>
           </div>
         </section>

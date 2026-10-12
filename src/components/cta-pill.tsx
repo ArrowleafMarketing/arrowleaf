@@ -24,14 +24,18 @@ export function CtaPill({
   className?: string;
 }) {
   const t = TONES[tone];
+  // Same-page anchors ("#sign-up") are a plain <a>, like the hero's and
+  // footer's: next/link treats a repeat click on the hash already in the URL
+  // as a no-op, so the button would only scroll the first time.
+  const Tag = href.startsWith("#") ? "a" : Link;
   return (
-    <Link
+    <Tag
       href={href}
       data-cta-host
       className={`group/cta inline-flex items-center gap-4 rounded-full py-1.5 pl-6 pr-1.5 text-sm font-medium outline-offset-4 transition-colors duration-300 ${t.pill} ${className}`}
     >
       {children}
       <LeafCta className={t.disc} />
-    </Link>
+    </Tag>
   );
 }
